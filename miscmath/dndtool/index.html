@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <title>D&D Tool</title>
+	</head>
+	<body>
+        <h1>D&D Tool</h1>
+        <a href="..">Bck to miscellaneous math pages</a><br>
+        <br>
+        Unfortunately this page is (hopefully temporarily) out of commission.<br>
+        The original Dungeons and Dragons tool ran on PHP, and now that I've migrated my website to github pages, I can't run PHP.<br>
+        Hopefully eventually when I get my own server space back this page will run once again.<br>
+        For now, you can can download the source code from the following two links:<br>
+        <br>
+        <a href="DnD.hs">DnD.hs</a><br>
+        <a href="Main.hs">Main.hs</a><br>
+        <br>
+        To run them, you'll need to have <code>ghc</code> installed.<br>
+        To compile the program, type "<code>ghc -O Main.hs</code>".<br>
+        To run it type "<code>./Main n e a</code>" where <var>n</var> is the number of sides on your die, <var>e</var> is the desired expected value, and <var>a</var> is the acceptable margin of error.<br>
+        <br>
+        If you'd like to run the program as it used to run on this page, you can also download the old PHP page <a href="exec.php">here</a>.<br>
+        You'll also need <a href="Main">this executable file</a>, and <a href="timer.sh">this timer script file</a>.<br>
+        Put all three files in the same directory, then navigate to the PHP file in your web browser and it should work (as long as you're not using Windows).
+	</body>
+</html>
