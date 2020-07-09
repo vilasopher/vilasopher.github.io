@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>The Perfect Shuffle</title>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+</head>
+<body>
+	<h1>The Perfect Shuffle</h1>
+	<a href="..">Back to main page</a>
+	<br>
+	<br>
+	An ordering of cards in a deck is called a <em>perfect shuffle</em> if no card appears next to a card of the same number (cf. Sean).<br>
+	The problem of finding the probability of a perfect shuffle is perhaps the most important open question in all of mathematics.
+	<br>
+	<br>
+	<b>Update 1:</b> The solution has been found.
+	The following is an paraphrase from section 6 of <a href="http://people.brandeis.edu/~gessel/homepage/papers/rookp.pdf?fbclid=IwAR1GNb4YXg4K9KoByYz-UgTNzYAtNirShXbYFQ7G_EhyymfT1MxWZwgzkd8">this paper</a>.
+	<br>
+	Let \(\Phi\) be the linear functional defined by \(\Phi\left(x^n\right) = n!\) and let \(l_n^*(x)\) be the polynomial given by \(l_0^*(x)=1\) and for \(n>0\),
+	$$ l_n^*(x) = \sum_{k=0}^{n-1} \left(-1\right)^k \binom{n}{k} \binom{n-1}{k} k! \, x^{n-k} . $$
+	Then
+	$$ \Phi \left( \prod_{i=1}^r l_{n_i}^*(x) \right) $$
+	is the number of linear arrangements of \(n_1 + \dotsb + n_r \) objects, with \(n_i\) of color \(i\), such that adjacent objects have different colors.
+	<br>
+	In particular, taking \(r = 13\) and \(n_i = 4\) for each \(i\), we see that
+	$$ \Phi \left( \left( l_4^*(x) \right)^{13} \right) = 3668033946384704437729512814619767610579526911188666362431432294400 $$
+	is the number of shuffles of a standard 52-card deck which are perfect shuffles.
+	Thus the probability of a perfect shuffle is
+	$$ \frac{\Phi \left( \left( l_4^*(x) \right)^{13} \right)}{52!} = \frac{672058204939482014438623912695190927357}{14778213400262135041705388361938994140625} \approx 0.045476282331. $$
+	Thanks to Vatsa for finding the source.
+	<br>
+	<br>
+	<b>Update 2:</b> James wrote a nice paper, <a href="https://arxiv.org/abs/1911.07426">which can be found here</a>, that explains the above result.
+
+</body>
+</html>
