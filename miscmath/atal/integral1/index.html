@@ -69,6 +69,35 @@ For \(k=11\):
     Then, by noticing that \(f(x) \leq g(x)\) on \([0,1]\), we can observe that
     $$\sum_{n=0}^{k-2} (-1)^n \left( \frac{B_{n+1} H_n}{n+1} - \zeta'(-n) \right) k \binom{k-1}{n} = \gamma + r(k),$$
     where the remainder term \(r(k)\) satisfies \(r(k) = \Theta\left(\frac{1}{k}\right)\).
-
+    <br>
+    <br>
+    <b>Update the Third:</b> Atal (along with Rushil) has found an even more effective version of the limit.
+    Suppose we define
+    $$3(x) = \int_0^1 f(t)^x \,dt.$$
+    Then from the above fact that \(f(t)^x \leq g(t)^x\) and \(\int_0^1 g(t)^x \,dt = \frac{1}{x+1}\), we can see that \(x3(x) \leq \frac{x}{x+1}\); similarly, we can show that \(g(t)^2 \leq f(t)\) (and so \(g(t)^{2x} \leq f(t)^x\)), which is equivalent to showing
+    $$\left((n+1)(1-nt)\right)^2 \leq \frac{1}{t}-n \qquad \text{ for } t \in \left[ \frac{1}{n+1}, \frac{1}{n} \right], \qquad \text{ for any } n \in \mathbb{N}.$$
+    This essentially comes down to showing that
+    $$- \left((n+1)n\right)^2\left(x-\frac{1}{n}\right)\left(x-\frac{1}{n+1}\right)\left(x-\frac{1}{n(n+1)}\right) \geq 0 \qquad \text{ on } x \in \left[ \frac{1}{n+1}, \frac{1}{n} \right],$$
+    which is clear.
+    By some wacky monotonicity considerations it should be possible to show that \(\alpha = \lim_{x\to\infty} x3(x)\) exists, and the above bounds tell us that
+    $$\frac{x}{2x+1} \leq x 3(x) \leq \frac{x}{x+1}, \qquad \text{ so } \frac{1}{2} \leq \alpha \leq 1.$$
+    But this doesn't tell us what \(\alpha\) is.
+    However, a more succint approach does: Note that
+    $$ 3(x) = \int_0^1 \left\{ \frac{1}{t} \right\}^x \,dt = \int_1^\infty \frac{\{u\}^x}{u^2} \,du,$$
+    by applying $u = \frac{1}{t}$.
+    Then we see that
+    $$\int_1^\infty \frac{\{u\}^x}{u^2} \,du = \sum_{n=1}^\infty \int_n^{n+1} \frac{\{u\}^x}{u^2} \,du = \sum_{n=1}^\infty \int_n^{n+1} \frac{(u-n)^x}{u^2} \,du \geq \sum_{n=1}^\infty \frac{1}{(n+1)^2} \int_n^{n+1} (u-n)^x \,du = \frac{1}{x+1} \sum_{n=1}^\infty \frac{1}{(n+1)^2} = \frac{\zeta(2)-1}{x+1}.$$
+    (This method is due to Rushil Raghavan. Thanks Rushil! He also showed that \(\alpha \leq \frac{\pi^2}{6}\) by using \(\frac{1}{u^2} \leq \frac{1}{n^2}\) in the same way).
+    <br>
+    For the upper bound, we use the fact that
+    $$\frac{(u-n)^x}{u^2} \leq \frac{(u-n)^{x-1}}{(n+1)^2} \qquad \text{ for } n \leq u \leq n+1,$$
+    which is clear since for $n \leq u \leq n+1$, we have
+    $$0 \leq (u-(n+1))(u-n(n+1)) = u^2 - u(n+1)^2 + n(n+1)^2.$$
+    Then
+    $$\sum_{n=1}^\infty \int_n^{n+1} \frac{(u-n)^x}{u^2} \,du \leq \sum_{n=1}^\infty \frac{1}{(n+1)^2} \int_n^{n+1} (u-n)^{x-1} \,du = \frac{\zeta(2) - 1}{x}.$$
+    So \(\alpha = \zeta(2) - 1\).
+    Well, this should also tell us that the giant sum above is
+    $$ \sum_{n=0}^{k-2} (-1)^n \left( \frac{B_{n+1} H_n}{n+1} - \zeta'(-n) \right) k \binom{k-1}{n} = \gamma + \frac{\pi^2}{6x} + O\left( \frac{1}{x^2} \right).$$
+    Can we see a pattern emerging?
 </body>
 </html>
