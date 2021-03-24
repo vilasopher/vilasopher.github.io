@@ -84,7 +84,7 @@ For \(k=11\):
     But this doesn't tell us what \(\alpha\) is.
     However, a more succint approach does: Note that
     $$ 3(x) = \int_0^1 \left\{ \frac{1}{t} \right\}^x \,dt = \int_1^\infty \frac{\{u\}^x}{u^2} \,du,$$
-    by applying $u = \frac{1}{t}$.
+    by applying \(u = \frac{1}{t}\).
     Then we see that
     $$\int_1^\infty \frac{\{u\}^x}{u^2} \,du = \sum_{n=1}^\infty \int_n^{n+1} \frac{\{u\}^x}{u^2} \,du = \sum_{n=1}^\infty \int_n^{n+1} \frac{(u-n)^x}{u^2} \,du \geq \sum_{n=1}^\infty \frac{1}{(n+1)^2} \int_n^{n+1} (u-n)^x \,du = \frac{1}{x+1} \sum_{n=1}^\infty \frac{1}{(n+1)^2} = \frac{\zeta(2)-1}{x+1}.$$
     (This method is due to Rushil Raghavan. Thanks Rushil! He also showed that \(\alpha \leq \frac{\pi^2}{6}\) by using \(\frac{1}{u^2} \leq \frac{1}{n^2}\) in the same way).
