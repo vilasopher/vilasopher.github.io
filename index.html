@@ -2,11 +2,24 @@
 <html>
 <head>
 	<title>Vilas's Website</title>
+
+    <script type="text/javascript">
+        function update_image() {
+            var img = Array("at.jpg", "balaton.jpg", "gyongyos.jpg",
+                        "maggiore.jpg", "yellowstone.jpg", "zion.jpg");
+            var filename = "headshots/" + img[Math.floor(Math.random() * img.length)];
+            document.getElementById("headshot").src = filename;
+        }
+    </script>
+
 </head>
 <body>
 	<h1>Vilas's Website</h1>
 
-	<img src="headshots/balaton.jpg" height="700">
+	<img id="headshot" href="headshots/at.jpg" height="500">
+    <script type="text/javascript">
+        update_image()
+    </script>
     <br>
 
     <a href="cv">Curriculum Vitae</a>
