@@ -1,7 +1,7 @@
 const blocksize = 2;
 const numcolumns = window.innerWidth / blocksize;
 const numrows = window.innerHeight / blocksize;
-const rate = 30;
+const rate = 32;
 
 let keepgoing = true
 let h = 0
@@ -38,7 +38,7 @@ function draw() {
     for (let i = 0; i < numcolumns; i++) {
       let c = columns[i];
       
-      columnclocks[c] -= 1/60;
+      columnclocks[c] -= 1/128;
 
       if (columnclocks[c] <= 0) {
         columnclocks[c] = exponential_tick();
