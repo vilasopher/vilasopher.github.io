@@ -52,7 +52,7 @@ function draw() {
 
         columnheights[c] = blockheight;
 
-        if (columnheights[c] >= numrows - 2) {
+        if (columnheights[c] >= numrows + 50) {
           keepgoing = false;
         }
       }
