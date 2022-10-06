@@ -1,5 +1,6 @@
 let zoom = 0.5;
 let vertscale = 10;
+let lineheight;
 
 let s = 0;
 let prev;
@@ -7,34 +8,37 @@ let next;
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
+  lineheight = (2/3) * height;
   
   strokeWeight(0.5);
   stroke('blue');
-  line(0, height/2, width, height/2);
+  line(0, lineheight, width, lineheight);
   strokeWeight(1);
   stroke('black');
   
-  prev = height / 2;
-  next = height / 2;
+  prev = lineheight;
+  next = lineheight;
   
   s += 1;
 }
 
 function draw() {
-  for (let i = 0; i < 20; i++) {
-    prev = next;
-    next = prev + vertscale * randn_bm((s * zoom / (2 * width))**2 / 2, zoom);
-    
-    if (next > height / 2) {
-      mid = (next - height/2)/(next-prev);
-      next = height/2 - mid * (next - prev);
-      line(zoom * (s-1), prev, zoom * (s-mid), height/2);
-      line(zoom * (s-mid), height/2, zoom * s, next);
-    } else {
-      line(zoom * (s-1), prev, zoom * s, next);
+  if (zoom * s < width + 10) {
+    for (let i = 0; i < 50; i++) {
+      prev = next;
+      next = prev + vertscale * randn_bm((s * zoom / (1.5 * width))**2 / 2, zoom);
+       
+      if (next > lineheight) {
+        mid = (next - lineheight)/(next-prev);
+        next = lineheight - mid * (next - prev);
+        line(zoom * (s-1), prev, zoom * (s-mid), lineheight);
+        line(zoom * (s-mid), lineheight, zoom * s, next);
+      } else {
+        line(zoom * (s-1), prev, zoom * s, next);
+      }
+      
+      s += 1;
     }
-    
-    s += 1;
   }
 }
 
