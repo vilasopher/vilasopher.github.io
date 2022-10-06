@@ -24,7 +24,7 @@ function setup() {
 
 function draw() {
   if (zoom * s < width + 10) {
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 25; i++) {
       prev = next;
       next = prev + vertscale * randn_bm((s * zoom / (1.5 * width))**2 / 2, zoom);
        
