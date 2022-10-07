@@ -30,7 +30,7 @@ function draw() {
        
       if (next > lineheight) {
         mid = (next - lineheight)/(next-prev);
-        next = lineheight - mid * (next - prev);
+        next = lineheight;
         line(zoom * (s-1), prev, zoom * (s-mid), lineheight);
         line(zoom * (s-mid), lineheight, zoom * s, next);
       } else {
