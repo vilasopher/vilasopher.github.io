@@ -1,7 +1,7 @@
 let zoom = 0.5;
 let vertscale = 15;
 let numexcursions = 10;
-let lineheight = 2/3;
+let lineheight = 3/5;
 let offset = 8;
 
 let s = 0;
