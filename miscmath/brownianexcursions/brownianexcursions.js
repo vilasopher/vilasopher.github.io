@@ -1,7 +1,7 @@
 let zoom = 0.5;
-let vertscale = 15;
+let vertscale = 20;
 let numexcursions = 10;
-let lineheight = 3/4;
+let lineheight = 2/3;
 let offset = 8;
 
 let s = 0;
@@ -42,7 +42,7 @@ function draw() {
 function advance_brownian_motion() {
   for (let i = 0; i < 25; i++) {
     prev = next;
-    next = prev + vertscale * randn_bm((s * zoom / width)**2 / 2, zoom);
+    next = prev + vertscale * randn_bm(s * zoom / (width*2), zoom);
 
     if (next > lineheight) {
       mid = (next - lineheight)/(next-prev);
@@ -81,7 +81,7 @@ function write_results() {
 
     strokeWeight(0)
     text(
-      (excursions[i].length * zoom / width).toFixed(3),
+      (excursions[i].length * zoom / (width * 2)).toFixed(3),
       zoom * (excursions[i].start + excursions[i].end) / 2 - 17,
       lineheight + (numexcursions - i) * offset + 12
     )
