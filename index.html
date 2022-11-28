@@ -5,10 +5,22 @@
 
     <script type="text/javascript">
         function update_image() {
-            var img = Array("appalachiantrail.jpg", "balaton.jpg", "gyongyos.jpg", "maggiore.jpg",
-                        "parkofroses.jpg", "prague.jpg", "yellowstone.jpg", "zion.jpg");
-            var filename = "headshots/" + img[Math.floor(Math.random() * img.length)];
+            var images = Array(
+                ["appalachiantrail.jpg", "Appalachian Trail", "Sean"],
+                ["balaton.jpg", "Tihany", "Anisah"],
+                ["gyongyos.jpg", "Gyöngyös", "Nora"],
+                ["maggiore.jpg", "Lake Maggiore", "Marco"],
+                ["parkofroses.jpg", "Columbus", "Anisah"],
+                ["prague.jpg", "Prague", "Myself"],
+                ["rosegarden.jpg", "Berkeley", "Anisah"],
+                ["yellowstone.jpg", "Yellowstone", "Anisah"],
+                ["zion.jpg", "Zion", "Sean"]
+            );
+            var img = images[Math.floor(Math.random() * images.length)];
+            var filename = "headshots/" + img[0];
+            var titletext = "Location: " + img[1] + "\nPhoto Credit: " + img[2];
             document.getElementById("headshot").src = filename;
+            document.getElementById("headshot").title = titletext;
         }
     </script>
 
