@@ -42,12 +42,12 @@ function draw() {
     if (k==0) {
       strokeWeight(2);
     }
-    line(0, H/2 + k * unit, W, H/2 + k * unit); 
+    line(-5, H/2 + k * unit, W+5, H/2 + k * unit); 
   }
   
-  for (let k = 0; k <= W / unit; k++) {
+  for (let k = 0; k <= W / unit + 1; k++) {
     strokeWeight(2);
-    line(tickstart + k * unit, H/2 - 15, tickstart + k * unit, H/2 + 15);
+    line(tickstart + k * unit, H/2 - 10, tickstart + k * unit, H/2 + 10);
   }
 
   if (N < maxpoints) {
@@ -59,7 +59,7 @@ function draw() {
       }
     }
     tickstart -= dt * unit;
-    if(tickstart < 3) {
+    if(tickstart < -5) {
       tickstart += unit;
     }
   }
@@ -72,9 +72,9 @@ function draw() {
     stroke(colors[j][0], colors[j][1], colors[j][2]);
     strokeWeight(4);
     for (let i = 1; i <= N; i++) {
-      line(dt*unit*(i-1), H/2 + unit*X[j][i-1], dt*unit*i, H/2 + unit*X[j][i]);
+      line(dt*unit*(i-1)-5, H/2 + unit*X[j][i-1], dt*unit*i-5, H/2 + unit*X[j][i]);
     }
     strokeWeight(10)
-    point(dt*unit*N, H/2 + unit*X[j][N]);
+    point(dt*unit*N-5, H/2 + unit*X[j][N]);
   }
 }
