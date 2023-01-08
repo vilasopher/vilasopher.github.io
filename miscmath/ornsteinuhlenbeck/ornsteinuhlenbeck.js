@@ -74,5 +74,7 @@ function draw() {
     for (let i = 1; i <= N; i++) {
       line(dt*unit*(i-1), H/2 + unit*X[j][i-1], dt*unit*i, H/2 + unit*X[j][i]);
     }
+    strokeWeight(10)
+    point(dt*unit*N, H/2 + unit*X[j][N]);
   }
 }
