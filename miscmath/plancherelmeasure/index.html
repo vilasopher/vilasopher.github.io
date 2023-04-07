@@ -132,9 +132,9 @@
 					);
 					o1 = windowwidth / 2;
 					o2 = windowheight - 50;
-					x1 = unit;
+					x1 = -unit;
 					x2 = -unit;
-					y1 = -unit;
+					y1 = unit;
 					y2 = -unit;
 				}
 
@@ -172,7 +172,7 @@
 					vertex(o1 + twosqrtn * x1, o2 + twosqrtn * x2);
 					vertex(o1, o2);
 					vertex(o1 + twosqrtn * y1, o2 + twosqrtn * y2);
-					for (let t = -Math.PI/2; t <= Math.PI/2; t += Math.PI/400) {
+					for (let t = -Math.PI/2; t <= Math.PI/2; t += Math.PI/200) {
 						vertex(o1 + 0.5 * twosqrtn * (x1 * wx(t) + y1 * wy(t)), o2 + 0.5 * twosqrtn * (x2 * wx(t) + y2 * wy(t)))
 					}
 					endShape();
