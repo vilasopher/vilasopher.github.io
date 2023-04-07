@@ -63,6 +63,14 @@
 
 				return mu;
 			}
+
+			function wx(t) {
+				return (2 * t / Math.PI + 1) * Math.sin(t) + 2 / Math.PI * Math.cos(t);
+			}
+
+			function wy(t) {
+				return (2 * t / Math.PI - 1) * Math.sin(t) + 2 / Math.PI * Math.cos(t);
+			}
 			
 			function draw(){
 				var numboxes = document.getElementById('numboxes').value;
@@ -87,6 +95,7 @@
 				}
 
 				var o1, o2, x1, x2, y1, y2;
+				var twosqrtn = 2 * Math.sqrt(n);
 
 				if (englishcoordinates) {
 					if (windowheight >= windowwidth) {
@@ -96,10 +105,10 @@
 						o1 = 50 + (windowwidth - windowheight)/2;
 						o2 = 50;
 					}
-					x1 = (windowsize - 100) / (2 * Math.sqrt(n));
+					x1 = (windowsize - 100) / twosqrtn;
 					x2 = 0;
 					y1 = 0;
-					y2 = (windowsize - 100) / (2 * Math.sqrt(n));
+					y2 = (windowsize - 100) / twosqrtn;
 				}
 
 				if (frenchcoordinates) {
@@ -110,16 +119,16 @@
 						o1 = 50 + (windowwidth - windowheight) / 2;
 						o2 = windowsize - 50;
 					}
-					x1 = (windowsize - 100) / (2 * Math.sqrt(n));
+					x1 = (windowsize - 100) / twosqrtn;
 					x2 = 0;
 					y1 = 0;
-					y2 = - (windowsize - 100) / (2 * Math.sqrt(n));
+					y2 = - (windowsize - 100) / twosqrtn;
 				}
 
 				if (russiancoordinates) {
 					let unit =  Math.min(
-						(windowwidth - 100) / (2.75 * Math.sqrt(2 * n)),
-						(windowheight - 100) / ( 1.5 * Math.sqrt(2 * n))
+						(windowwidth - 100) / (1.8 * twosqrtn),
+						(windowheight - 100) / twosqrtn
 					);
 					o1 = windowwidth / 2;
 					o2 = windowheight - 50;
@@ -131,6 +140,9 @@
 
 				var rows = plancherel(n);
 				var cols = transpose(rows);
+
+				stroke(0);
+				strokeWeight(1);
 
 				line(o1, o2, o1 + rows[0] * x1, o2 + rows[0] * x2);
 				line(o1, o2, o1 + cols[0] * y1, o2 + cols[0] * y2);
@@ -150,6 +162,20 @@
 						o1 + (i+1) * x1 + cols[i] * y1,
 						o2 + (i+1) * x2 + cols[i] * y2
 					);
+				}
+
+				if (limitshape) {
+					stroke(50,150,255);
+					strokeWeight(2);
+					fill(50,150,255,50);
+					beginShape();
+					vertex(o1 + twosqrtn * x1, o2 + twosqrtn * x2);
+					vertex(o1, o2);
+					vertex(o1 + twosqrtn * y1, o2 + twosqrtn * y2);
+					for (let t = -Math.PI/2; t <= Math.PI/2; t += Math.PI/400) {
+						vertex(o1 + 0.5 * twosqrtn * (x1 * wx(t) + y1 * wy(t)), o2 + 0.5 * twosqrtn * (x2 * wx(t) + y2 * wy(t)))
+					}
+					endShape();
 				}
 			}
 		</script>
