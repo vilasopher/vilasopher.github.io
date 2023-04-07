@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Plancherel Measure</title>
+            <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
+		<script>
+			const windowwidth = Math.floor(window.innerWidth * 0.85);
+			const windowheight = Math.floor(window.innerHeight * 0.85);
+			const windowsize = Math.min(windowwidth, windowheight);
+			function setup(){
+				var canvas = createCanvas(windowwidth, windowheight);
+                canvas.parent('canvasForHTML');
+				frameRate(20);
+			}
+
+			function insert(n, row) {
+				if (row.length == 0 || n > Math.max(...row)) {
+					row[row.length] = n;
+					return -1;
+				} else {
+					for (let i=0; i<row.length; i++) {
+						var m = row[i];
+						if (m > n) {
+							row[i] = n;
+							return m;
+						}
+					}
+				}
+			}
+
+			function plancherel(numboxes) {
+				var p = Array.from({length: numboxes}, () => Math.random());
+
+				var tableau = [[]];
+
+				for (let i=0; i<p.length; i++) {
+					var r = -1;
+					var m = p[i];
+
+					while (m > -1) {
+						r += 1;
+						if (tableau.length <= r) {
+							tableau[tableau.length] = [];
+						}
+						m = insert(m, tableau[r]);
+					}
+				}
+
+				return tableau.map(row => row.length)
+			}
+
+			function transpose(lengths) {
+				var lambda = lengths.slice().reverse();
+				var mu = [];
+
+				while (0 != lambda.reduce((a,b) => a+b, 0)) {
+					mu[mu.length] = lambda.length;
+					lambda = lambda.map(l => l-1);
+					while (lambda[0] == 0) {
+						lambda.shift();
+					}
+				}
+
+				return mu;
+			}
+			
+			function draw(){
+				var numboxes = document.getElementById('numboxes').value;
+				var englishcoordinates = document.getElementById('englishcoordinates').checked;
+				var frenchcoordinates = document.getElementById('frenchcoordinates').checked;
+				var russiancoordinates = document.getElementById('russiancoordinates').checked;
+				var limitshape = document.getElementById('limitshape_on').checked;
+
+				background(200)
+
+				var n = Number(numboxes);
+				if (isNaN(n) || !(englishcoordinates || frenchcoordinates || russiancoordinates)) {
+					fill(255, 50, 25);
+					textSize(30);
+					text('Error: ' + numboxes + ' is not a number', window.innerWidth * 0.3, window.innerHeight * 0.3);
+					return;
+				}
+
+				if (n > 25000) {
+					n = 25000;
+					document.getElementById('numboxes').value = String(25000);
+				}
+
+				var o1, o2, x1, x2, y1, y2;
+
+				if (englishcoordinates) {
+					if (windowheight >= windowwidth) {
+						o1 = 50;
+						o2 = 50;
+					} else {
+						o1 = 50 + (windowwidth - windowheight)/2;
+						o2 = 50;
+					}
+					x1 = (windowsize - 100) / (2 * Math.sqrt(n));
+					x2 = 0;
+					y1 = 0;
+					y2 = (windowsize - 100) / (2 * Math.sqrt(n));
+				}
+
+				if (frenchcoordinates) {
+					if (windowheight >= windowwidth) {
+						o1 = 50;
+						o2 = windowsize - 50;
+					} else {
+						o1 = 50 + (windowwidth - windowheight) / 2;
+						o2 = windowsize - 50;
+					}
+					x1 = (windowsize - 100) / (2 * Math.sqrt(n));
+					x2 = 0;
+					y1 = 0;
+					y2 = - (windowsize - 100) / (2 * Math.sqrt(n));
+				}
+
+				if (russiancoordinates) {
+					let unit =  Math.min(
+						(windowwidth - 100) / (2.75 * Math.sqrt(2 * n)),
+						(windowheight - 100) / ( 1.5 * Math.sqrt(2 * n))
+					);
+					o1 = windowwidth / 2;
+					o2 = windowheight - 50;
+					x1 = unit;
+					x2 = -unit;
+					y1 = -unit;
+					y2 = -unit;
+				}
+
+				var rows = plancherel(n);
+				var cols = transpose(rows);
+
+				line(o1, o2, o1 + rows[0] * x1, o2 + rows[0] * x2);
+				line(o1, o2, o1 + cols[0] * y1, o2 + cols[0] * y2);
+
+				for (let i=0; i<rows.length; i++) {
+					line(
+						o1 + (i+1) * y1,
+						o2 + (i+1) * y2, 
+						o1 + (i+1) * y1 + rows[i] * x1,
+						o2 + (i+1) * y2 + rows[i] * x2
+					);
+				}
+				for (let i=0; i<cols.length; i++) {
+					line(
+						o1 + (i+1) * x1, 
+						o2 + (i+1) * x2,
+						o1 + (i+1) * x1 + cols[i] * y1,
+						o2 + (i+1) * x2 + cols[i] * y2
+					);
+				}
+
+				//text(String(rows), 15, 15);
+				//text(String(cols), 15, 30);
+			}
+		</script>
+	</head>
+	<body>
+	Number of Boxes: &nbsp; <input type="text" id="numboxes" name="numboxes"> <br>
+	Coordinate System: &nbsp; 
+	<input type="radio" id="englishcoordinates" name="coordinates" checked> English &nbsp;
+	<input type="radio" id="frenchcoordinates" name="coordinates"> French &nbsp;
+	<input type="radio" id="russiancoordinates" name="coordinates"> Russian <br>
+	Limit Shape: &nbsp;
+	<input type="radio" id="limitshape_on" name="limitshape"> On &nbsp;
+	<input type="radio" id="limitshape_off" name="limitshape" checked> Off
+	<br><br>
+    <div id="canvasForHTML" style="text-align: center;"></div>
+	</body>
+</html>
