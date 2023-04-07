@@ -131,7 +131,11 @@
 						(windowheight - 100) / twosqrtn
 					);
 					o1 = windowwidth / 2;
-					o2 = windowheight - 50;
+					if (windowwidth < windowheight) {
+						o2 = 2 * twosqrtn + 200;
+					} else {
+						o2 = windowheight - 50
+					}
 					x1 = -unit;
 					x2 = -unit;
 					y1 = unit;
