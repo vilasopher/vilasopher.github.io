@@ -7,7 +7,7 @@
 			const boxsize = Math.min(window.innerWidth, window.innerHeight) * 0.95;
 
 			var points = [];
-			var time = 0;
+			var time = 0.01;
 			var nextTick = 0;
 			var scale = 0;
 
@@ -28,14 +28,14 @@
 			}
 
 			function insertPoint(p) {
-				let start = 0;
-				let end = points.length - 1;
+				let start = -1;
+				let end = points.length;
 				let mid;
 
 				while (start < end - 1) {
 					mid = Math.floor((start + end) / 2);
 
-					if (p < points[mid]) {
+					if (p[0] < points[mid][0]) {
 						end = mid;
 					} else {
 						start = mid;
@@ -132,6 +132,10 @@
 					ox + boxsize,
 					oy - boxsize
 				);
+
+				strokeWeight(max(20/Math.sqrt(scale),10))
+				point(ox,oy);
+				point(ox+boxsize,oy-boxsize);
 			}
 
 			function setup(){
@@ -141,7 +145,7 @@
 			}
 
 			function draw(){
-				time += 1/5;
+				time += 1;
 				scale = Math.sqrt(time);
 
 				if (time >= nextTick) {
