@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Laplacian Walk</title>
+            <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
+		<script>
+			var boxsize = 15;
+			const numwalks = 25000;
+			
+			const Nc = Math.ceil(window.innerWidth / boxsize);
+			const Nr = Math.ceil(window.innerHeight / boxsize);
+			
+			boxsize = window.innerWidth / (Nc-1);
+			
+			var posc = 0;
+			var posr = Math.floor(Nr/2);
+			
+			var goalc = Nc-1;
+			var goalr = posr;
+			
+			const grid = [...Array(Nr)].map(e => Array(Nc));
+
+			function setup(){
+				var canvas = createCanvas(window.innerWidth, window.innerHeight);
+				frameRate(20);
+				
+				for (let c = 0; c < Nc; c++) {
+					for (let r = 0; r < Nr; r++) {
+						if (c == 0 || r == 0 || c == Nc-1 || r == Nr-1) {
+							grid[r][c] = -1;
+						} else {
+							grid[r][c] = 0;
+						}
+					}
+				}
+				
+				grid[posr][posc] = -1;
+				
+				strokeWeight(boxsize / 2);
+				stroke(0);
+			}
+			
+			function randomWalk(r, c) {
+				let cr = r;
+				let cc = c;
+				
+				while (grid[cr][cc] > -1) {
+					let u = Math.random();
+					if (u < 1/4) {
+						cr += 1;
+					} else if (u < 1/2) {
+						cr -= 1;
+					} else if (u < 3/4) {
+						cc += 1;
+					} else {
+						cc -= 1;
+					}
+				}
+				
+				return [cr, cc];
+			}
+			
+			function harmonicFunction(r, c) {
+				let total = 0;
+				
+				for (let i = 0; i < numwalks; i++) {
+					pt = randomWalk(r, c);
+					if (pt[0] == goalr && pt[1] == goalc) {
+						total += 1;
+					}
+				}
+				
+				return total / numwalks;
+				
+			}
+			
+			const dirs = [[0,1],[0,-1],[1,0],[-1,0]];
+			var stepWeights = [0,0,0,0];
+			var done = false;
+			
+			function draw() {
+				if (posr == goalr && posc == goalc-1) {
+					line(
+						posc * boxsize,
+						(posr+0.5) * boxsize,
+						(posc += 1) * boxsize,
+						(posr+0.5) * boxsize
+					);
+					
+					done = true;
+				}
+				
+				if (!done) {
+					stepWeights = [0,0,0,0];
+					
+					for (let i = 0; i < 4; i++) {
+						if (grid[posr+dirs[i][0]][posc+dirs[i][1]] > -1) {
+							stepWeights[i] = harmonicFunction(posr+dirs[i][0], posc+dirs[i][1]);
+						}
+					}
+					
+					let Z = stepWeights.reduce((partialSum, a) => partialSum + a, 0);
+					let u = Math.random() * Z;
+					
+					for (let i = 0; i < 4; i++) {
+						if (u < stepWeights[i]) {
+							line(
+								posc * boxsize,
+								(posr+0.5) * boxsize,
+								(posc += dirs[i][1]) * boxsize,
+								((posr += dirs[i][0])+0.5) * boxsize
+							);
+							
+							grid[posr][posc] = -1;
+							break;
+						} else {
+							u -= stepWeights[i];
+						}
+					}
+				}
+			}
+		</script>
+	</head>
+	<body style="margin:0;padding:0;overflow:hidden;"></body>
+</html>
