@@ -23,7 +23,7 @@
 					}
 				}
 				
-				colorMode(HSB, 100);
+				colorMode(HSB, 360);
 				noStroke();
 			}
 			
@@ -67,13 +67,20 @@
 				}
 			}
 			
+			function setColor(c,r) {
+				let rawhue = (grid[c][r]+2)/4 * 270;
+				let clampedhue = Math.max(Math.min(rawhue, 270), 0);
+				let saturation = 270 + Math.max(rawhue - clampedhue, clampedhue - rawhue, 0);
+				fill(clampedhue, saturation, 360);
+			}
+			
 			function drawGrid() {
 				strokeWeight(0);
 				
 				for (let c = 0; c < Nc; c++) {
 					for (let r = 0; r < Nr; r++) {
 						
-						fill((grid[c][r]+2)/4 * 75, 100, 100)
+						setColor(c, r);
 						
 						rect(
 							c * boxsize + hdiff,
@@ -87,7 +94,7 @@
 			
 			
 			function draw() {
-				background(2/4 * 75, 100, 100);
+				background(2/4 * 270, 270, 360);
 				updateGrid();
 				drawGrid();
 			}
