@@ -4,7 +4,7 @@
 		<title>Stochastic Heat Equation</title>
             <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
 		<script>
-			const boxsize = 10;
+			const boxsize = 5;
 			const Nr = Math.floor(window.innerHeight / boxsize);
 			const Nc = Math.floor(window.innerWidth / boxsize);
 			const vdiff = (window.innerHeight - Nr * boxsize) / 2;
@@ -15,7 +15,7 @@
 			
 			function setup(){
 				var canvas = createCanvas(window.innerWidth, window.innerHeight);
-				frameRate(30);
+				frameRate(60);
 				
 				for (let c = 0; c < Nc; c++) {
 					for (let r = 0; r < Nr; r++) {
@@ -50,6 +50,17 @@
 				return sum / 4 - grid[c][r];
 			}
 			
+			function neighborAverage(c, r) {
+				let sum = 0;
+				
+				for (let i = 0; i < 4; i++) {
+					sum += dirichletgrid(c + dirs[i][0],r + dirs[i][1]);
+					//sum += periodicgrid(c + dirs[i][0], r + dirs[i][1]);
+				}
+				
+				return sum / 4;
+			}
+			
 			// Standard Normal variate using Box-Muller transform.
 			function gaussianRandom(mean=0, stdev=1) {
 			    let u = 1 - Math.random(); //Converting [0,1) to (0,1)
@@ -59,16 +70,16 @@
 			    return z * stdev + mean;
 			}
 			
-			function updateGrid(dt = 1/30) {
+			function updateGrid(noisestdev = 1) {
 				for (let c = 0; c < Nc; c++) {
 					for (let r = 0; r < Nr; r++) {
-						grid[c][r] += laplacian(c,r)*dt + gaussianRandom(mean=0, stdev=Math.sqrt(dt));
+						grid[c][r] = neighborAverage(c, r) + gaussianRandom(mean=0, stdev=noisestdev);
 					}
 				}
 			}
 			
 			function setColor(c,r) {
-				let rawhue = (grid[c][r]+2)/4 * 270;
+				let rawhue = (grid[c][r]+3)/6 * 270;
 				let clampedhue = Math.max(Math.min(rawhue, 270), 0);
 				let saturation = 270 + Math.max(rawhue - clampedhue, clampedhue - rawhue, 0);
 				fill(clampedhue, saturation, 360);
