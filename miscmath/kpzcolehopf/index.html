@@ -4,7 +4,7 @@
 		<title>KPZ Equation (Cole-Hopf Solution)</title>
             <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
 		<script>
-			const N = window.innerWidth;
+			const N = window.innerWidth + 100;
 			
 			const SHE = Array(N);
 			const KPZ = Array(N);
@@ -19,7 +19,7 @@
 				}
 				
 				stroke(0);
-				strokeWeight(2);
+				strokeWeight(1);
 			}
 			
 			// Standard Normal variate using Box-Muller transform.
@@ -46,21 +46,21 @@
 			}
 			
 			function drawKPZ() {
-				for (let i = 0; i < N-1; i++) {
-					line(
-						i,
-						window.innerHeight/2 - 5 * KPZ[i],
-						i+1,
-						window.innerHeight/2 - 5 * KPZ[i+1]
-					);
+				fill(102, 204, 255);
+				beginShape();
+				vertex(-50,-50);
+				for (let i = 0; i < N; i++) {
+					vertex(i-50, window.innerHeight/2 - 5 * KPZ[i]);
 				}
+				vertex(window.innerWidth + 50, -50);
+				endShape(CLOSE);
 			}
 			
 			function draw() {
 				updateSHE();
 				updateKPZ();
 				
-				background(255);
+				background(255, 51, 51);
 				drawKPZ();
 			}
 		</script>
