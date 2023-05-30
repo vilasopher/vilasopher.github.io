@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>KPZ Equation (Cole-Hopf Solution)</title>
+            <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
+		<script>
+			const N = window.innerWidth;
+			
+			const SHE = Array(N);
+			const KPZ = Array(N);
+			
+			function setup(){
+				var canvas = createCanvas(window.innerWidth, window.innerHeight);
+				frameRate(60);
+				
+				for (let i = 0; i < N; i++) {
+					SHE[i] = 1;
+					KPZ[i] = 0;
+				}
+				
+				stroke(0);
+				strokeWeight(2);
+			}
+			
+			// Standard Normal variate using Box-Muller transform.
+			function gaussianRandom(mean=0, stdev=1) {
+			    let u = 1 - Math.random(); //Converting [0,1) to (0,1)
+			    let v = Math.random();
+			    let z = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+			    // Transform to the desired mean and standard deviation:
+			    return z * stdev + mean;
+			}
+			
+			
+			function updateSHE(dt = 0.05) {
+				for (let i = 1; i < N-1; i++) {
+					SHE[i] += (0.5 * (SHE[i-1] + SHE[i+1]) - SHE[i]) * dt 
+							+ gaussianRandom(mean=0, stdev = Math.sqrt(dt)) * SHE[i];
+				}
+			}
+			
+			function updateKPZ() {
+				for (let i = 0; i < N; i++) {
+					KPZ[i] = Math.log(SHE[i]);
+				}
+			}
+			
+			function drawKPZ() {
+				for (let i = 0; i < N-1; i++) {
+					line(
+						i,
+						window.innerHeight/2 - 5 * KPZ[i],
+						i+1,
+						window.innerHeight/2 - 5 * KPZ[i+1]
+					);
+				}
+			}
+			
+			function draw() {
+				updateSHE();
+				updateKPZ();
+				
+				background(255);
+				drawKPZ();
+			}
+		</script>
+	</head>
+	<body style="margin:0;padding:0;overflow:hidden;"></body>
+</html>
