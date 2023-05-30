@@ -32,9 +32,9 @@
 			}
 			
 			
-			function updateSHE(dt = 0.05) {
-				for (let i = 1; i < N-1; i++) {
-					SHE[i] += (0.5 * (SHE[i-1] + SHE[i+1]) - SHE[i]) * dt 
+			function updateSHE(dt = 0.1) {
+				for (let i = 0; i < N; i++) {
+					SHE[i] += (0.5 * (SHE[(i-1+N)%N] + SHE[(i+1+N)%N]) - SHE[i]) * dt 
 							+ gaussianRandom(mean=0, stdev = Math.sqrt(dt)) * SHE[i];
 				}
 			}
