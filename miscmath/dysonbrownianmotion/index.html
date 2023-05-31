@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Dyson Brownian Motion</title>
+            <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
+		<script>
+			const width = window.innerWidth;
+			const height = window.innerHeight;
+			
+			const N = 20;
+			const DBM = [...Array(N)].map(e => Array(width));
+			let cqpos = 0;
+			let T = 0;
+			
+			// Standard Normal variate using Box-Muller transform.
+			function gaussianRandom(mean=0, stdev=1) {
+			    let u = 1 - Math.random(); //Converting [0,1) to (0,1)
+			    let v = Math.random();
+			    let z = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+			    // Transform to the desired mean and standard deviation:
+			    return z * stdev + mean;
+			}
+			
+			
+			function updateDBM(dt = 0.2) {
+				for (let i = 0; i < N; i++) {
+					DBM[i][cqpos] = DBM[i][(cqpos+width-1)%width];
+					
+					for (let j = 0; j < N; j++) {
+						if (j != i) {
+							DBM[i][cqpos] += dt / (DBM[i][(cqpos+width-1)%width] - DBM[j][(cqpos+width-1)%width]);
+						}
+					}
+					
+					let noise = gaussianRandom(mean=0, stdev=Math.sqrt(dt));
+					
+					while (i > 0 && DBM[i][cqpos] + noise >= DBM[i-1][cqpos]) {
+						noise = gaussianRandom(mean=0, stdev=Math.sqrt(dt));
+					}
+					
+					DBM[i][cqpos] += noise;
+				}
+				
+				cqpos = (cqpos+1)%width;
+				T += dt;
+			}
+			
+			let moving = false;
+			let shift = 0 * width;
+			
+			function drawDBM() {
+				stroke(0);
+				strokeWeight(2);
+				for (let i = 0; i < N; i++) {
+					beginShape();
+					
+					if (moving) {
+						beginShape();
+						for (let j = 0; j < width; j++) {
+							if (!isNaN(DBM[i][(cqpos+j)%width])) {
+								vertex(
+									j - shift,
+									height/10 - 5 * (DBM[i][(cqpos+j)%width] - 2 * Math.sqrt(T * N))
+								);
+							}
+						}
+						endShape();
+					} else {
+						beginShape();
+						for (let j = 0; j < width; j++) {
+							if (!isNaN(DBM[i][j])) {
+								vertex(
+									j - shift,
+									height/10 - 5 * (DBM[i][j] - 2 * Math.sqrt(T * N))
+								);
+							}
+						}
+						endShape();
+					}
+				}
+			}
+			
+			function drawVerticalTickMarks() {
+				stroke(100);
+				strokeWeight(1);
+				for (let i = 0; i <= height / 50; i++) {
+					line(
+						-5, (50 * i + 10 * Math.sqrt(T*N)) % (height + 50 - height%50),
+						20, (50 * i + 10 * Math.sqrt(T*N)) % (height + 50 - height%50)
+					);
+				}
+			}
+			
+			function setup(){
+				var canvas = createCanvas(width, height);
+				frameRate(60);
+				
+				for (let i = 0; i < N; i++) {
+					for (let j = 0; j < width; j++) {
+						DBM[i][j] = j==0 ? -4*i+2*N : NaN;
+					}
+				}
+				cqpos = 1;
+				
+				stroke(0);
+				strokeWeight(2);
+				noFill();
+				
+				while (isNaN(DBM[0][Math.ceil(shift)])) {
+					updateDBM();
+				}
+			}
+			
+			function draw() {
+				updateDBM();
+				
+				if (cqpos >= width-1) {
+					moving = true;
+				}
+				
+				background(255);
+				drawVerticalTickMarks();
+				drawDBM();
+			}
+		</script>
+	</head>
+	<body style="margin:0;padding:0;overflow:hidden;"></body>
+</html>
