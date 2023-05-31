@@ -9,8 +9,11 @@
 			const SHE = Array(N);
 			const KPZ = Array(N);
 			
+			const width = window.innerWidth;
+			const height = window.innerHeight;
+			
 			function setup(){
-				var canvas = createCanvas(window.innerWidth, window.innerHeight);
+				var canvas = createCanvas(width, height);
 				frameRate(60);
 				
 				for (let i = 0; i < N; i++) {
@@ -50,9 +53,9 @@
 				beginShape();
 				vertex(-50,-50);
 				for (let i = 0; i < N; i++) {
-					vertex(i-50, window.innerHeight/2 - 5 * KPZ[i]);
+					vertex(i-50, height/6 - 5 * KPZ[i]);
 				}
-				vertex(window.innerWidth + 50, -50);
+				vertex(width + 50, -50);
 				endShape(CLOSE);
 			}
 			
