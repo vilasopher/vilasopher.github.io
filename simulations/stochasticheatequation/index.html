@@ -13,6 +13,8 @@
 			const grid = [...Array(Nc)].map(e => Array(Nr));
 			const dirs = [[0,1],[0,-1],[1,0],[-1,0]];
 			
+			const m = Math.sqrt(2/Math.PI)*Math.log(Nr * Nc);
+			
 			function setup(){
 				var canvas = createCanvas(window.innerWidth, window.innerHeight);
 				frameRate(60);
@@ -68,8 +70,8 @@
 			}
 			
 			function setColor(c,r) {
-				let rawhue = (grid[c][r]+3)/6 * 270;
-				let clampedhue = Math.max(Math.min(rawhue, 270), 0);
+				let rawhue = (grid[c][r]+0.5*m)/m * 240;
+				let clampedhue = Math.max(Math.min(rawhue, 240), 0);
 				let saturation = 270 + Math.max(rawhue - clampedhue, clampedhue - rawhue, 0);
 				fill(clampedhue, saturation, 360);
 			}
