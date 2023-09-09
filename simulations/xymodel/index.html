@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://cindyjs.org/dist/latest/Cindy.js"></script>
+    <script type="text/javascript" src="https://cindyjs.org/dist/latest/CindyGL.js"></script>
+    <title>Plane Rotator Model</title>
+  </head>
+
+	<body style="margin:0;padding:0;overflow:hidden;">
+    <div id="CSCanvas"></div>
+
+    <script id="csinit" type="text/x-cindyscript">
+      use("CindyGL");
+
+      W = 1024; //javascript("window.innerWidth");
+      H = 1024; //javascript("window.innerHeight");
+      beta = 2;
+      invrate = 0.05;
+      
+      L = [0, 0]; //bottom left corner
+      R = [W, 0]; //bottom right corner
+
+      pressed = false;
+
+      createimage("state", W, H);
+      colorplot(L, R, "state", (random(),0,0));
+
+      get(x, y) := imagergb(L, R, "state", (mod(x,W), mod(y,H)))_1;
+
+      energy(x, y, spin) := - (cos(2*pi*(spin - get(x,y+1))) + cos(2*pi*(spin - get(x,y-1))) + cos(2*pi*(spin - get(x+1,y))) + cos(2*pi*(spin - get(x-1,y))));
+
+      newstate(x, y) := (
+        current = get(x, y);
+        proposal = random();
+
+        currentEnergy = energy(x, y, current);
+        proposalEnergy = energy(x, y, proposal);
+
+        if (random() < exp(-1 * beta * (proposalEnergy - currentEnergy)), proposal, current);
+      );
+
+      textbox = polygon([(50,50), (50,250), (150,250), (150,50)]);
+    </script>
+
+    <script id="csdraw" type="text/x-cindyscript">
+      repeat(10,
+        colorplot(L, R, "state",
+          if (random() < invrate, (newstate(#.x, #.y),0,0), (get(#.x, #.y),0,0))
+        );
+      );
+      colorplot(hue(imagergb("state", #)_1));
+
+      if (pressed, (
+          fill(textbox, color->(1,1,1));
+          beta = mouse().y * 0.01;
+          drawtext((100, 100), "beta = " + beta);
+          drawtext((100, 200), "mouse = " + mouse().x + " " + mouse().y);
+        );
+      );
+    </script>
+
+    <script id="csmousedown" type="text/x-cindyscript">
+      pressed = true;
+    </script>
+
+    <script id="csmouseup" type="text/x-cindyscript">
+      pressed = false;
+    </script>
+
+    <script type="text/javascript">
+    CindyJS({
+      scripts: "cs*",
+      autoplay: true,
+      ports: [{
+        id: "CSCanvas",
+        width: window.innerWidth,
+        height: window.innerHeight,
+        transform: [{
+          visibleRect: [0, 0, window.innerWidth, window.innerHeight]
+        }]
+      }]
+    });
+    </script>
+  </body>
+</html>
