@@ -12,8 +12,8 @@
     <script id="csinit" type="text/x-cindyscript">
       use("CindyGL");
 
-      W = 1024; //javascript("window.innerWidth");
-      H = 1024; //javascript("window.innerHeight");
+      W = 512; //javascript("window.innerWidth");
+      H = 512; //javascript("window.innerHeight");
       beta = 2;
       invrate = 0.05;
       
@@ -51,8 +51,8 @@
       colorplot(hue(imagergb("state", #)_1));
 
       if (pressed, (
-          fill(textbox, color->(1,1,1));
-          beta = mouse().y * 0.05;
+          beta = mouse().y * 0.005 + 0.5;
+          //fill(textbox, color->(1,1,1));
           //drawtext((100, 100), "beta = " + beta);
           //drawtext((100, 200), "mouse = " + mouse().x + " " + mouse().y);
         );
