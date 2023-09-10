@@ -23,6 +23,7 @@
       pressed = false;
 
       createimage("state", W, H);
+      createimage("picture", W, H);
       colorplot(L, R, "state", (random(),0,0));
 
       get(x, y) := imagergb(L, R, "state", (mod(x,W), mod(y,H)))_1;
