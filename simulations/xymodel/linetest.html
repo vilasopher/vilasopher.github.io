@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://cindyjs.org/dist/latest/Cindy.js"></script>
+    <script type="text/javascript" src="https://cindyjs.org/dist/latest/CindyGL.js"></script>
+    <title>XY Model</title>
+  </head>
+
+	<body style="margin:0;padding:0;overflow:hidden;">
+    <div id="CSCanvas"></div>
+
+    <script id="csinit" type="text/x-cindyscript">
+      use("CindyGL");
+
+      corners = screenbounds();
+      W = dist(corners_1, corners_2); 
+      H = dist(corners_1, corners_4);
+      temp = 1/2;
+      invrate = 0.05;
+      
+      L = [0, 0]; //bottom left corner
+      R = [W, 0]; //bottom right corner
+
+      pressed = false;
+
+      createimage("state", W, H);
+      createimage("picture", W, H);
+
+      randomOnCircle() := (
+        t = random();
+        (0.5*(cos(2*pi*t)+1), 0.5*(sin(2*pi*t)+1), 0);
+      );
+
+      colorplot(L, R, "state", randomOnCircle());
+
+      get(x, y) := imagergb(L, R, "state", (mod(x,W), mod(y,H)));
+
+      shiftedDotProduct(a,b) := (2*a_1-1) * (2*b_1-1) + (2*a_2-1) * (2*b_2-1);
+
+      energy(x, y, spin) := - (shiftedDotProduct(spin, get(x,y+1)) + shiftedDotProduct(spin, get(x,y-1)) + shiftedDotProduct(spin, get(x+1,y)) + shiftedDotProduct(spin, get(x-1,y)));
+
+      newstate(x, y) := (
+        current = get(x, y);
+        proposal = randomOnCircle();
+
+        currentEnergy = energy(x, y, current);
+        proposalEnergy = energy(x, y, proposal);
+
+        if (random() < exp((-1/temp)*(proposalEnergy - currentEnergy)), proposal, current);
+      );
+
+      colorfunction(spin) := (
+        x = 2*spin_1-1;
+        y = 2*spin_2-1;
+        t = (arctan2(x,y)+pi)/(2*pi);
+        // TODO: perceptually uniformize the color space!
+        hue(t);
+      );
+
+      textbox = polygon([(50,50), (50,80), (260,80), (260,50)]);
+    </script>
+
+    <script id="csdraw" type="text/x-cindyscript">
+      repeat(20,
+        colorplot(L, R, "state",
+          if (#.x > 100 & #.x < 150,
+            (0,1,0),
+            if (random() < invrate, newstate(#.x, #.y), get(#.x, #.y))
+          );
+        );
+      );
+      colorplot(colorfunction(imagergb("state", #)));
+
+      if (pressed, (
+          temp = (mouse().y / H) * 2;
+          fill(textbox, color->(1,1,1));
+          drawtext((60, 60), "temperature = " + temp);
+        );
+      );
+    </script>
+
+    <script id="csmousedown" type="text/x-cindyscript">
+      pressed = true;
+    </script>
+
+    <script id="csmouseup" type="text/x-cindyscript">
+      pressed = false;
+    </script>
+
+    <script type="text/javascript">
+    CindyJS({
+      scripts: "cs*",
+      autoplay: true,
+      ports: [{
+        id: "CSCanvas",
+        width: window.innerWidth,
+        height: window.innerHeight,
+        transform: [{
+          visibleRect: [0, 0, window.innerWidth, window.innerHeight]
+        }]
+      }]
+    });
+    </script>
+  </body>
+</html>
