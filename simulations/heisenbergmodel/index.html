@@ -3,7 +3,7 @@
   <head>
     <script type="text/javascript" src="https://cindyjs.org/dist/latest/Cindy.js"></script>
     <script type="text/javascript" src="https://cindyjs.org/dist/latest/CindyGL.js"></script>
-    <title>XY Model</title>
+    <title>Heisenberg Model</title>
   </head>
 
 	<body style="margin:0;padding:0;overflow:hidden;">
@@ -27,20 +27,17 @@
 
       randomOnSphere() := (
         x = randomnormal();
-		y = randomnormal();
-		z = randomnormal();
-		r = sqrt(x^2 + y^2 + z^2);
-		x = x/r;
-		y = y/r;
-		z = z/r;
-        (0.5*(x+1), 0.5*(y+1), 0.5*(z+1));
+		    y = randomnormal();
+		    z = randomnormal();
+		    r = sqrt(x^2 + y^2 + z^2);
+        (0.5*(x/r+1), 0.5*(y/r+1), 0.5*(z/r+1));
       );
 
       colorplot(L, R, "state", randomOnSphere());
 
       get(x, y) := imagergb(L, R, "state", (mod(x,W), mod(y,H)));
 
-      shiftedDotProduct(a,b) := (2*a_1-1) * (2*b_1-1) + (2*a_2-1) * (2*b_2-1);
+      shiftedDotProduct(a,b) := (2*a_1-1) * (2*b_1-1) + (2*a_2-1) * (2*b_2-1) + (2*a_3-1) * (2*b_3-1);
 
       energy(x, y, spin) := - (shiftedDotProduct(spin, get(x,y+1)) + shiftedDotProduct(spin, get(x,y-1)) + shiftedDotProduct(spin, get(x+1,y)) + shiftedDotProduct(spin, get(x-1,y)));
 
@@ -63,7 +60,7 @@
           if (random() < invrate, newstate(#.x, #.y), get(#.x, #.y))
         );
       );
-      colorplot(imagergb("state", #));
+      drawimage(L, R, "state");
 
       if (pressed, (
           temp = max([0.000001,(mouse().y / H) * 2]);
