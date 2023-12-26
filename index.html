@@ -6,28 +6,28 @@
     <script type="text/javascript">
         function update_image() {
             var images = Array(
-                ["appalachiantrail.jpg", "Appalachian Trail", "James Enouen"],
-                ["balaton.jpg", "Tihany", "Anisah Elsayed-Awad"],
-                ["goldengate.jpg", "Golden Gate Bridge", "Jyotsna Sreenivasan"],
-                ["grantgrove.jpg", "Grant Grove", "Stan Buczynski"],
-                ["gyongyos.jpg", "Gyöngyös", "Nora Hajnoczky"],
-                ["hollywoodbeach.jpg", "Hollywood Beach", "Anisah Elsayed-Awad"],
-                ["hydepark.jpg", "Hyde Park", "Anisah Elsayed-Awad"],
-                ["lacma.jpg", "LACMA", "Michael Takacs"],
-                ["maggiore.jpg", "Lake Maggiore", "Marco Marengon"],
-                ["msri1.jpg", "MSRI", "Jason Maze"], 
-                ["msri2.jpg", "MSRI", "Anna Brandenberger"], 
-                ["mthood.jpg", "Mt Hood", "Michael Darby"],
-                ["oxfordst.jpg", "Oxford Street, Berkeley", "Jyotsna Sreenivasan"],
-                ["parkofroses.jpg", "Columbus Park of Roses", "Anisah Elsayed-Awad"],
-                ["prague.jpg", "Prague Library", "Vilas Winstein"],
-                ["rosegarden.jpg", "Berkeley Rose Garden", "Anisah Elsayed-Awad"],
-                ["yellowstone.jpg", "Yellowstone", "Anisah Elsayed-Awad"],
-                ["zion.jpg", "Zion", "Sean Dunphy"]
+                ["appalachiantrail.jpg", "Appalachian Trail, 2019", "James Enouen"],
+                ["balaton.jpg", "Tihany, 2021", "Anisah Elsayed-Awad"],
+                ["goldengate.jpg", "Golden Gate Bridge, 2023", "Jyotsna Sreenivasan"],
+                ["grantgrove.jpg", "Grant Grove, 2023", "Stan Buczynski"],
+                ["gyongyos.jpg", "Gyöngyös, 2021", "Nora Hajnoczky"],
+                ["hollywoodbeach.jpg", "Hollywood Beach, 2023", "Anisah Elsayed-Awad"],
+                ["hydepark.jpg", "Hyde Park, 2022", "Anisah Elsayed-Awad"],
+                ["lacma.jpg", "LACMA, 2023", "Michael Takacs"],
+                ["maggiore.jpg", "Lake Maggiore, 2022", "Marco Marengon"],
+                ["msri1.jpg", "MSRI, 2023", "Jason Maze"], 
+                ["msri2.jpg", "MSRI, 2023", "Anna Brandenberger"], 
+                ["mthood.jpg", "Mt Hood, 2023", "Michael Darby"],
+                ["oxfordst.jpg", "Berkeley, 2023", "Jyotsna Sreenivasan"],
+                ["parkofroses.jpg", "Columbus Park of Roses, 2020", "Anisah Elsayed-Awad"],
+                ["prague.jpg", "Prague Library, 2021", "Vilas Winstein"],
+                ["rosegarden.jpg", "Berkeley Rose Garden, 2022", "Anisah Elsayed-Awad"],
+                ["yellowstone.jpg", "Yellowstone, 2020", "Anisah Elsayed-Awad"],
+                ["zion.jpg", "Zion, 2020", "Sean Dunphy"]
             );
             var img = images[Math.floor(Math.random() * images.length)];
             var filename = "headshots/" + img[0];
-            var titletext = "Location: " + img[1] + "\nPhoto Credit: " + img[2];
+            var titletext = "Spacetime Coordinates: " + img[1] + "\nPhoto Credit: " + img[2];
             document.getElementById("headshot").src = filename;
             document.getElementById("headshot").title = titletext;
         }
