@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Random Geometric Graph</title>
+            <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
+		<script>
+			const width = window.innerWidth;
+			const height = window.innerHeight;
+
+            const vertexSize = 20;
+            const edgeSize = 5;
+            const connectionRadius = 10 * vertexSize;
+
+			const N = Math.floor((width * height) / (40 * vertexSize * vertexSize));
+			
+			const X = Array(N);
+			const Y = Array(N);
+			
+			function setup(){
+				var canvas = createCanvas(width, height);
+				frameRate(60);
+				
+				for (let i = 0; i < N; i++) {
+					X[i] = Math.random() * width;
+					Y[i] = Math.random() * height;
+				}
+				
+				stroke(0);
+				strokeWeight(vertexSize);
+			}
+			
+			// Standard Normal variate using Box-Muller transform.
+			function gaussianRandom(mean=0, stdev=1) {
+			    let u = 1 - Math.random(); //Converting [0,1) to (0,1)
+			    let v = Math.random();
+			    let z = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+			    // Transform to the desired mean and standard deviation:
+			    return z * stdev + mean;
+			}
+			
+			
+			function updateVertices(diffusivity=2) {
+				for (let i = 0; i < N; i++) {
+					X[i] = (X[i] + gaussianRandom(mean=0, stdev=diffusivity) + width) % width;
+					Y[i] = (Y[i] + gaussianRandom(mean=0, stdev=diffusivity) + height) % height;
+				}
+			}
+			
+			function drawVertices() {
+                stroke(0);
+                strokeWeight(vertexSize);
+				for (let i = 0; i < N; i++) {
+					point(X[i], Y[i]);
+
+                    if (X[i] < vertexSize) {
+                        point(X[i]+width, Y[i]);
+                    }
+                    if (X[i] > width - vertexSize) {
+                        point(X[i]-width, Y[i]);
+                    }
+                    if (Y[i] < vertexSize) {
+                        point(X[i], Y[i]+height);
+                    }
+                    if (Y[i] > width - vertexSize) {
+                        point(X[i], Y[i]-height);
+                    }
+				}
+			}
+
+            function drawEdges() {
+                strokeWeight(edgeSize);
+                for (let i = 0; i < N; i++) {
+                    for (let j = 0; j < i; j++) {
+                        for (sx = -1; sx <= 1; sx++) {
+                            for (sy = -1; sy <= 2; sy++) {
+                                d = Math.sqrt((X[i]-(X[j]+sx*width))**2 + (Y[i]-(Y[j]+sy*height))**2);
+                                if (d < connectionRadius) {
+                                    stroke(0,200,255,255-255*d/connectionRadius);
+                                    line(X[i],Y[i],X[j]+sx*width,Y[j]+sy*height);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+			
+			function draw() {
+				updateVertices();
+				background(255, 255, 255);
+                drawEdges();
+				drawVertices();
+			}
+		</script>
+	</head>
+	<body style="margin:0;padding:0;overflow:hidden;"></body>
+</html>
