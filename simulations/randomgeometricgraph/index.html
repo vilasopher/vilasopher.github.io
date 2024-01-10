@@ -77,6 +77,9 @@
                                 if (d < connectionRadius) {
                                     stroke(0,200,255,255-255*d/connectionRadius);
                                     line(X[i],Y[i],X[j]+sx*width,Y[j]+sy*height);
+									if (sx != 0 || sy != 0) {
+										line(X[i]-sx*width,Y[i]-sy*width,X[j],Y[j]);
+									}
                                 }
                             }
                         }
