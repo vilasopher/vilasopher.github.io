@@ -2,6 +2,44 @@
 <html>
 <head>
 	<title>Friends</title>
+    <script type="text/javascript">
+        function update_order() {
+            var friends = Array(
+                ["Srivatsa Srinivas", "https://sites.google.com/ucsd.edu/srivatsasrinivas/"],
+                ["James Enouen", "https://enouenj.github.io/"],
+                ["John White", "https://bookwiththearrowsreversed.wordpress.com/"],
+                ["Jake Huryn", "https://jakehuryn.github.io/"],
+                ["Alex Li", "https://alex7li.github.io/about/"],
+                ["Rushil Raghavan", "https://rushil.online/"],
+                ["Caio Alves", "https://sites.google.com/view/caioalves/"],
+                ["Olle Elias", "https://sites.google.com/view/olofelias/"],
+                ["Aranka Hru&scaron;kov&aacute;", "https://aranka.uk/"],
+                ["Samuel Mohr", "https://www.fi.muni.cz/~mohr/"],
+                ["Konrad Kr&oacute;licki", "https://sites.google.com/view/konrad-krolicki/"],
+                ["Anisah Elsayed-Awad", "https://sites.google.com/view/naturalcenter/"],
+                ["Rikhav Shah", "http://rikhav.com/"],
+                ["Anna Brandenberger", "https://abrandenberger.github.io/"],
+                ["Shrey Aryan", "https://shrey183.github.io/"],
+                ["Daecheol Kim", "https://www.daecheolkim.com/"],
+                ["Haiyu Huang", "https://www.math.ucla.edu/~haiyu/"],
+                ["Mriganka Basu Roy Chowdhury"]
+            );
+            
+            // shuffle the list
+            for (var i = friends.length-1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i+1));
+                var temp = friends[i];
+                friends[i] = friends[j];
+                friends[j] = temp;
+            }
+
+            var divcontents = ""
+            for (var i = 0; i < friends.length; i++) {
+                divcontents += "<br><a href=\"" + friends[i][1] + "\">" + friends[i][0] + "</a>";
+            }
+            document.getElementById("links").innerHTML = divcontents
+        }
+    </script>
 </head>
 <body>
     <h1>Some of My Friends Have Websites</h1>
@@ -10,39 +48,9 @@
     <br>
     These links take you away from my website and to my friends' websites:
     <br>
-    <br>
-    <a href="https://sites.google.com/ucsd.edu/srivatsasrinivas/">Srivatsa Srinivas</a>
-    <br>
-    <a href="https://enouenj.github.io/">James Enouen</a>
-    <br>
-    <a href="https://bookwiththearrowsreversed.wordpress.com/">John White</a>
-    <br>
-    <a href="https://jakehuryn.github.io/">Jake Huryn</a>
-    <br>
-    <a href="https://alex7li.github.io/about/">Alex Li</a>
-    <br>
-    <a href="http://rushil.online/">Rushil Raghavan</a>
-    <br>
-    <a href="https://sites.google.com/view/caioalves/">Caio Alves</a>
-    <br>
-    <a href="https://sites.google.com/view/olofelias/">Olle Elias</a>
-    <br>
-    <a href="https://aranka.uk">Aranka Hru&scaron;kov&aacute;</a>
-    <br>
-    <a href="https://www.fi.muni.cz/~mohr/">Samuel Mohr</a>
-    <br>
-    <a href="https://sites.google.com/view/konrad-krolicki/">Konrad Kr&oacute;licki</a>
-    <br>
-    <a href="https://sites.google.com/view/naturalcenter/">Anisah Elsayed-Awad</a>
-    <br>
-    <a href="http://rikhav.com/">Rikhav Shah</a>
-	<br>
-	<a href="https://abrandenberger.github.io/">Anna Brandenberger</a>
-	<br>
-	<a href="https://shrey183.github.io/">Shrey Aryan</a>
-	<br>
-	<a href="https://www.daecheolkim.com/">Daecheol Kim</a>
-	<br>
-	<a href="https://www.math.ucla.edu/~haiyu/">Haiyu Huang</a>
 
+    <div id="links"></div>
+    <script type="text/javascript">
+        update_order()
+    </script>
 </html>
