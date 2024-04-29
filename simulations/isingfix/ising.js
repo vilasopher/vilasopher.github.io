@@ -48,10 +48,13 @@ function draw() {
     isingShader.setUniform('beta', 1);
     isingShader.setUniform('rate', 0.1);
   }
+
   
   // Give the shader a surface to draw on
   rect(-width/2,-height/2,width,height);
 
+
   // Copy the rendered image into our prevFrame image
   prevFrame.image(get(), 0, 0);  
+
 }
