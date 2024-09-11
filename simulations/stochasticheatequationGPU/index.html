@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://cindyjs.org/dist/latest/Cindy.js"></script>
+    <script type="text/javascript" src="https://cindyjs.org/dist/latest/CindyGL.js"></script>
+    <title>Stochastic Heat Equation</title>
+  </head>
+
+	<body style="margin:0;padding:0;overflow:hidden;">
+    <div id="CSCanvas"></div>
+
+    <script id="csinit" type="text/x-cindyscript">
+      use("CindyGL");
+
+      corners = screenbounds();
+      W = dist(corners_1, corners_2); 
+      H = dist(corners_1, corners_4);
+      
+      L = [0, 0]; //bottom left corner
+      R = [W, 0]; //bottom right corner
+
+      dt = 0.01
+
+      pressed = false;
+
+      createimage("state", W, H);
+      colorplot(L, R, "state", (random(),0,0));
+
+      get(x, y) := imagergb(L, R, "state", (mod(x,W), mod(y,H)))_1;
+
+      kernel = [[0.0, 0.25, 0.0],
+                 [0.25, -1.0, 0.25],
+                 [0.0, 0.25, 0.0]];
+
+      computelaplacian(x, y) := (
+        sum( apply(-1..1, dy,
+            sum( apply(-1..1, dx,
+                kernel_(dy+2)_(dx+2)*get(x+dx, y+dy)
+            ))
+          ))
+      );
+        
+			gaussianRandom(mean, stdev) := (
+        u = 1 - random();
+        v = random();
+        z = sqrt( -2.0 * log( u ) ) * cos( 2.0 * PI * v );
+        z * stdev + mean;
+      )
+      
+      newstate(x, y) := (
+        laplacian = computelaplacian(x, y);
+        q = get(x,y);
+
+        q + laplacian * dt + gaussianRandom(0,sqrt(dt))
+      );
+    </script>
+
+    <script id="csdraw" type="text/x-cindyscript">
+      repeat(20,
+        colorplot(L, R, "state",
+          if (random() < invrate, (newstate(#.x, #.y),0,0), (get(#.x, #.y),0,0))
+        );
+      );
+      drawImage(L,R,"state");
+    </script>
+
+    <script type="text/javascript">
+    CindyJS({
+      scripts: "cs*",
+      autoplay: true,
+      ports: [{
+        id: "CSCanvas",
+        width: window.innerWidth,
+        height: window.innerHeight,
+        transform: [{
+          visibleRect: [0, 0, window.innerWidth, window.innerHeight]
+        }]
+      }]
+    });
+    </script>
+  </body>
+</html>
