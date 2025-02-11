@@ -72,13 +72,13 @@
                 for (let i = 0; i < N; i++) {
                     for (let j = 0; j < i; j++) {
                         for (sx = -1; sx <= 1; sx++) {
-                            for (sy = -1; sy <= 2; sy++) {
+                            for (sy = -1; sy <= 1; sy++) {
                                 d = Math.sqrt((X[i]-(X[j]+sx*width))**2 + (Y[i]-(Y[j]+sy*height))**2);
                                 if (d < connectionRadius) {
                                     stroke(0,200,255,255-255*d/connectionRadius);
                                     line(X[i],Y[i],X[j]+sx*width,Y[j]+sy*height);
 									if (sx != 0 || sy != 0) {
-										line(X[i]-sx*width,Y[i]-sy*width,X[j],Y[j]);
+										line(X[i]-sx*width,Y[i]-sy*height,X[j],Y[j]);
 									}
                                 }
                             }
