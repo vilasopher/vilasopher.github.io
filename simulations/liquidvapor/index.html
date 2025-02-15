@@ -13,19 +13,30 @@
       use("CindyGL");
 
       corners = screenbounds();
-      W = dist(corners_1, corners_2) / 2; 
-      H = dist(corners_1, corners_4) / 2;
+      fullW = dist(corners_1, corners_2);
+      fullH = dist(corners_1, corners_4);
+      W = fullW / 2; 
+      H = fullH / 2;
+
+      panelsize = 128 * ceil(min(fullW,fullH) / (3 * 128));
       border = 10;
-      betacrit = 0.5 * log(1 + sqrt(2));
-      betamin = 0;
-      betamax = 3 * betacrit;
-      beta = betacrit;
-      hcrit = 0;
-      hmin = -2;
-      hmax = 2;
-      h = hcrit;
-      hsnap = 0.02;
-      betasnap = 0.01;
+
+      shiftpanel(panelcoord) := (corners_2_1, 0) - (panelsize + 2*border, -border) + panelcoord;
+      panelcorners = [shiftpanel((0,0)), shiftpanel((panelsize,0)), shiftpanel((panelsize,panelsize)), shiftpanel((0,panelsize))];
+
+      Tcrit = 0.5/log(1 + sqrt(2));
+      Tmin = 0.05;
+      Tmax = 2 * Tcrit - 0.1;
+      T = Tcrit;
+
+      Ccrit = -2;
+      Cmin = -4;
+      Cmax = 0;
+      C = Ccrit;
+
+      Csnap = 0.02;
+      Tsnap = 0.01;
+
       invrate = 0.05;
       
       L = [0, 0]; //bottom left corner
@@ -37,10 +48,10 @@
       createimage("picture", W, H);
       colorplot(L, R, "state", (randomint(2),0,0));
 
-      get(x, y) := imagergb(L, R, "state", (mod(x,W), mod(y,H)))_1;
-      get(x, y) := if (0 <= x & x < W & 0 <= y & y < H, imagergb(L, R, "state", (x,y))_1, 0.5);
+      get(x, y) := imagergb(L, R, "state", (mod(x,W), mod(y,H)))_1; // Periodic B.C.
+      // get(x, y) := if (0 <= x & x < W & 0 <= y & y < H, imagergb(L, R, "state", (x,y))_1, 0.5); // Free B.C.
 
-      energy(x, y, spin) := - (2*spin-1)*(2*get(x,y+1)-1) - (2*spin-1)*(2*get(x,y-1)-1) - (2*spin-1)*(2*get(x+1,y)-1) - (2*spin-1)*(2*get(x-1,y)-1) - h * (2*spin-1);
+      energy(x, y, spin) := - spin*(get(x,y+1) + get(x,y-1) + get(x+1,y) + get(x-1,y)) - C * spin;
 
       newstate(x, y) := (
         current = get(x, y);
@@ -49,7 +60,7 @@
         currentEnergy = energy(x, y, current);
         proposalEnergy = energy(x, y, proposal);
 
-        if (random() < exp(-1 * beta * (proposalEnergy - currentEnergy)), proposal, current);
+        if (random() < exp((-1/T) * (proposalEnergy - currentEnergy)), proposal, current);
       );
 
       // frame = 
@@ -61,28 +72,27 @@
           if (random() < invrate, (newstate(#.x, #.y),0,0), (get(#.x, #.y),0,0))
         );
       );
-      colorplot(if (imagergb("state", #)_1 > 0.5, (1,1,1), (0.2,0.6,1)));
+      colorplot(if (imagergb("state", #)_1 > 0.5, (1,0.95,0.9), (0.2,0.8,0.8)));
 
       if (pressed, (
-          beta = max([0, min([1, (mouse().x - border)/(W - 2*border)])]) * (betamax - betamin) + betamin;
-          beta = if (abs(beta-betacrit) < betasnap, betacrit, beta);
-          h = max([0, min([1, (mouse().y - border)/(H - 2*border)])]) * (hmax - hmin) + hmin;
-          h = if (abs(h-hcrit) < hsnap, hcrit, h);
-
-          linesize(3);
-          linecolor([0,1,0]);
-          draw((border, border), (border, H-border));
-          draw((border, H-border), (W-border, H-border));
-          draw((W-border, H-border), (W-border, border));
-          draw((W-border, border), (border, border));
-          draw(((betacrit - betamin) / (betamax - betamin) * (W-2*border) + border, H/2), (W-border, H/2));
-
-          draw(((beta-betamin)/(betamax-betamin) * (W-2*border) + border, (h-hmin)/(hmax-hmin) * (H-2*border) + border));
-
-          drawtext((border, border) + (10,50), "$\beta = " + beta + "$", size->40, color->(0,1,0));
-          drawtext((border, border) + (10,10), "$h = " + h + "$", size->40, color->(0,1,0));
+          T = max([0, min([1, (mouse().x - panelcorners_1_1)/(panelcorners_3_1 - panelcorners_1_1)])]) * (Tmax - Tmin) + Tmin;
+          C = max([0, min([1, (mouse().y - panelcorners_1_2)/(panelcorners_3_2 - panelcorners_1_2)])]) * (Cmax - Cmin) + Cmin;
         );
       );
+
+      linesize(3);
+      linecolor([0,0,0]);
+
+      panel = polygon(panelcorners);
+      fill(panel, color->(0.5,0.5,0.5));
+
+      if (key() == "A", fill(panel,color->(1,1,1)));
+      draw(panel);
+
+      draw(((T-Tmin)/(Tmax-Tmin) * (panelcorners_3_1 - panelcorners_1_1) + panelcorners_1_1, (C-Cmin)/(Cmax-Cmin) * (panelcorners_3_2 - panelcorners_1_2) + panelcorners_1_2), color->(0,0,0));
+
+      drawtext(panelcorners_1 + (10,50), "$T = " + T + "$", size->40, color->(0,0,0));
+      drawtext(panelcorners_1 + (10,10), "$C = " + C + "$", size->40, color->(0,0,0));
     </script>
 
     <script id="csmousedown" type="text/x-cindyscript">
@@ -91,6 +101,9 @@
 
     <script id="csmouseup" type="text/x-cindyscript">
       pressed = false;
+    </script>
+
+    <script id="cskeydown" type="text/x-cindyscript">
     </script>
 
     <script type="text/javascript">
