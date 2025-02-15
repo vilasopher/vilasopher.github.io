@@ -21,7 +21,7 @@
       panelblocksize = 128;
       panelproportion = 1/3;
       panelsize = panelblocksize * ceil(panelproportion * fullH / panelblocksize);
-      border = 10;
+      border = 20;
 
       shiftpanel(panelcoord) := (corners_2_1, 0) - (panelsize + border, -border) + panelcoord;
       panelcorners = [shiftpanel((0,0)), shiftpanel((panelsize,0)), shiftpanel((panelsize,panelsize)), shiftpanel((0,panelsize))];
