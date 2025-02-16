@@ -51,7 +51,7 @@
       get(x, y) := imagergb(L, R, "state", (mod(x,W), mod(y,H)))_1; // Periodic B.C.
       // get(x, y) := if (0 <= x & x < W & 0 <= y & y < H, imagergb(L, R, "state", (x,y))_1, 0.5); // Free B.C.
 
-      energy(x, y, spin) := - spin*(get(x,y+1) + get(x,y-1) + get(x+1,y) + get(x-1,y)) - C * spin;
+      energy(x, y, spin) := - spin*(get(x,y+1) + get(x,y-1) + get(x+1,y) + get(x-1,y) + C);
 
       newstate(x, y) := (
         current = get(x, y);
@@ -64,8 +64,6 @@
 
         if (proposalEnergy < currentEnergy % (T > 0 & random() < exp(-1 * safebeta * (proposalEnergy - currentEnergy))), proposal, current);
       );
-
-      // frame = 
     </script>
 
     <script id="csdraw" type="text/x-cindyscript">
