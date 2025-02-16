@@ -3,7 +3,7 @@
   <head>
     <script type="text/javascript" src="https://cindyjs.org/dist/latest/Cindy.js"></script>
     <script type="text/javascript" src="https://cindyjs.org/dist/latest/CindyGL.js"></script>
-    <title>Ising Model</title>
+    <title>Liquid-Vapor Model</title>
   </head>
 
 	<body style="margin:0;padding:0;overflow:hidden;">
@@ -28,17 +28,14 @@
       fontsize = 10;
 
       Tcrit = 0.5/log(1 + sqrt(2));
-      Tmin = 0.05;
-      Tmax = 2 * Tcrit - 0.1;
+      Tmin = 0;
+      Tmax = 2 * Tcrit;
       T = Tcrit;
 
       Ccrit = -2;
-      Cmin = -4;
-      Cmax = 0;
+      Cmin = -3;
+      Cmax = -1;
       C = Ccrit;
-
-      Csnap = 0.02;
-      Tsnap = 0.01;
 
       invrate = 0.05;
       
@@ -63,7 +60,9 @@
         currentEnergy = energy(x, y, current);
         proposalEnergy = energy(x, y, proposal);
 
-        if (random() < exp((-1/T) * (proposalEnergy - currentEnergy)), proposal, current);
+        safebeta = if(T > 0, 1/T, 1);
+
+        if (proposalEnergy < currentEnergy % (T > 0 & random() < exp(-1 * safebeta * (proposalEnergy - currentEnergy))), proposal, current);
       );
 
       // frame = 
@@ -87,9 +86,12 @@
       linecolor([0,0,0]);
 
       panel = polygon(panelcorners);
-      fill(panel, color->(0.5,0.5,0.5));
+      // fill(panel, color->(0.7,0.7,0.7));
+
+      drawimage(panelcorners_1, panelcorners_2, "phasediagram");
 
       if (key() == "A", fill(panel,color->(1,1,1)));
+
       draw(panel);
 
       draw(((T-Tmin)/(Tmax-Tmin) * (panelcorners_3_1 - panelcorners_1_1) + panelcorners_1_1, (C-Cmin)/(Cmax-Cmin) * (panelcorners_3_2 - panelcorners_1_2) + panelcorners_1_2), color->(0,0,0));
@@ -120,7 +122,8 @@
         transform: [{
           visibleRect: [0, 0, window.innerWidth, window.innerHeight]
         }]
-      }]
+      }],
+      images: {"phasediagram": "Untitled.jpg"}
     });
     </script>
   </body>
