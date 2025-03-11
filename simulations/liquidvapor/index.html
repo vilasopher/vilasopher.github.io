@@ -84,11 +84,13 @@
       linecolor([0,0,0]);
 
       panel = polygon(panelcorners);
-      // fill(panel, color->(0.7,0.7,0.7));
 
-      drawimage(panelcorners_1, panelcorners_2, "phasediagram");
+      drawimage(panelcorners_1, panelcorners_2, "fullphasediagram");
 
-      if (key() == "A", fill(panel,color->(1,1,1)));
+      if (key() == "A", drawimage(panelcorners_1, panelcorners_2, "emptyphasediagram"));
+      if (key() == "S", drawimage(panelcorners_1, panelcorners_2, "hightemp"));
+      if (key() == "D", drawimage(panelcorners_1, panelcorners_2, "hightemp_plusliquid"));
+      if (key() == "F", drawimage(panelcorners_1, panelcorners_2, "hightemp_plusvapor"));
 
       draw(panel);
 
@@ -121,7 +123,13 @@
           visibleRect: [0, 0, window.innerWidth, window.innerHeight]
         }]
       }],
-      images: {"phasediagram": "Untitled.jpg"}
+      images: {
+        "emptyphasediagram": "emptyphasediagram.png",
+        "fullphasediagram": "fullphasediagram.png",
+        "hightemp": "hightemp.png",
+        "hightemp_plusliquid": "hightemp_plusliquid.png",
+        "hightemp_plusvapor": "hightemp_plusvapor.png"
+      }
     });
     </script>
   </body>
