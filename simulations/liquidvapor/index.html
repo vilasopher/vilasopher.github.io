@@ -75,8 +75,16 @@
       colorplot(if (imagergb("state", #)_1 > 0.5, (0.2,0.8,0.8), (1,0.95,0.9)));
 
       if (pressed, (
-          T = max([0, min([1, (mouse().x - panelcorners_1_1)/(panelcorners_3_1 - panelcorners_1_1)])]) * (Tmax - Tmin) + Tmin;
-          C = max([0, min([1, (mouse().y - panelcorners_1_2)/(panelcorners_3_2 - panelcorners_1_2)])]) * (Cmax - Cmin) + Cmin;
+          if (mouse().x - panelcorners_1_1 >= 0 & mouse().x - panelcorners_1_1 <= panelcorners_3_1 - panelcorners_1_1
+            & mouse().y - panelcorners_1_2 >= 0 & mouse().y - panelcorners_1_2 <= panelcorners_3_2 - panelcorners_1_2, (
+              T = max([0, min([1, (mouse().x - panelcorners_1_1)/(panelcorners_3_1 - panelcorners_1_1)])]) * (Tmax - Tmin) + Tmin;
+              C = max([0, min([1, (mouse().y - panelcorners_1_2)/(panelcorners_3_2 - panelcorners_1_2)])]) * (Cmax - Cmin) + Cmin;
+            ), (
+              colorplot(L, R, "state",
+                if (|mouse() / 2, #| < 50, (1,0,0), (get(#.x, #.y), 0,0));
+              );
+            );
+          );
         );
       );
 
