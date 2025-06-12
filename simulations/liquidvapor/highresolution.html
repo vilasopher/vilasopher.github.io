@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://cindyjs.org/dist/latest/Cindy.js"></script>
+    <script type="text/javascript" src="https://cindyjs.org/dist/latest/CindyGL.js"></script>
+    <title>Liquid-Vapor Model</title>
+  </head>
+
+	<body style="margin:0;padding:0;overflow:hidden;">
+    <div id="CSCanvas"></div>
+
+    <script id="csinit" type="text/x-cindyscript">
+      use("CindyGL");
+
+      corners = screenbounds();
+      fullW = dist(corners_1, corners_2);
+      fullH = dist(corners_1, corners_4);
+      W = fullW; 
+      H = fullH;
+
+      panelblocksize = 128;
+      panelproportion = 1/3;
+      panelsize = panelblocksize * ceil(panelproportion * fullH / panelblocksize);
+      border = 20;
+
+      shiftpanel(panelcoord) := (corners_2_1, 0) - (panelsize + border, -border) + panelcoord;
+      panelcorners = [shiftpanel((0,0)), shiftpanel((panelsize,0)), shiftpanel((panelsize,panelsize)), shiftpanel((0,panelsize))];
+      fontsize = 10;
+
+      Tcrit = 0.5/log(1 + sqrt(2));
+      Tmin = 0;
+      Tmax = 2 * Tcrit;
+      T = Tcrit;
+
+      Ccrit = -2;
+      Cmin = -3;
+      Cmax = -1;
+      C = Ccrit;
+
+      invrate = 0.05;
+      
+      L = [0, 0]; //bottom left corner
+      R = [W, 0]; //bottom right corner
+
+      pressed = false;
+
+      createimage("state", W, H);
+      createimage("picture", W, H);
+      colorplot(L, R, "state", (randomint(2),0,0));
+
+      get(x, y) := imagergb(L, R, "state", (mod(x,W), mod(y,H)))_1; // Periodic B.C.
+      // get(x, y) := if (0 <= x & x < W & 0 <= y & y < H, imagergb(L, R, "state", (x,y))_1, 0.5); // Free B.C.
+
+      energy(x, y, spin) := - spin*(get(x,y+1) + get(x,y-1) + get(x+1,y) + get(x-1,y) + C);
+
+      newstate(x, y) := (
+        current = get(x, y);
+        proposal = randomint(2);
+
+        currentEnergy = energy(x, y, current);
+        proposalEnergy = energy(x, y, proposal);
+
+        safebeta = if(T > 0, 1/T, 1);
+
+        if (proposalEnergy < currentEnergy % (T > 0 & random() < exp(-1 * safebeta * (proposalEnergy - currentEnergy))), proposal, current);
+      );
+    </script>
+
+    <script id="csdraw" type="text/x-cindyscript">
+      repeat(20,
+        colorplot(L, R, "state",
+          if (random() < invrate, (newstate(#.x, #.y),0,0), (get(#.x, #.y),0,0))
+        );
+      );
+      colorplot(if (imagergb("state", #)_1 > 0.5, (0.2,0.8,0.8), (1,0.95,0.9)));
+
+      if (pressed, (
+          if (mouse().x - panelcorners_1_1 >= 0 & mouse().x - panelcorners_1_1 <= panelcorners_3_1 - panelcorners_1_1
+            & mouse().y - panelcorners_1_2 >= 0 & mouse().y - panelcorners_1_2 <= panelcorners_3_2 - panelcorners_1_2, (
+              T = max([0, min([1, (mouse().x - panelcorners_1_1)/(panelcorners_3_1 - panelcorners_1_1)])]) * (Tmax - Tmin) + Tmin;
+              C = max([0, min([1, (mouse().y - panelcorners_1_2)/(panelcorners_3_2 - panelcorners_1_2)])]) * (Cmax - Cmin) + Cmin;
+            ), (
+              colorplot(L, R, "state",
+                if (|mouse(), #| < 50, (1,0,0), (get(#.x, #.y), 0,0));
+              );
+            );
+          );
+        );
+      );
+
+      linesize(3);
+      linecolor([0,0,0]);
+
+      panel = polygon(panelcorners);
+
+      drawimage(panelcorners_1, panelcorners_2, "fullphasediagram");
+
+      if (key() == "A", drawimage(panelcorners_1, panelcorners_2, "emptyphasediagram"));
+      if (key() == "S", drawimage(panelcorners_1, panelcorners_2, "hightemp"));
+      if (key() == "D", drawimage(panelcorners_1, panelcorners_2, "hightemp_plusliquid"));
+      if (key() == "F", drawimage(panelcorners_1, panelcorners_2, "hightemp_plusvapor"));
+
+      draw(panel);
+
+      draw(((T-Tmin)/(Tmax-Tmin) * (panelcorners_3_1 - panelcorners_1_1) + panelcorners_1_1, (C-Cmin)/(Cmax-Cmin) * (panelcorners_3_2 - panelcorners_1_2) + panelcorners_1_2), color->(0,0,0));
+
+      drawtext(panelcorners_1 + (border,border + fontsize * panelsize / panelblocksize), "$T = " + T + "$", size->fontsize * panelsize / panelblocksize, color->(0,0,0));
+      drawtext(panelcorners_1 + (border,border), "$C = " + C + "$", size->fontsize * panelsize / panelblocksize, color->(0,0,0));
+    </script>
+
+    <script id="csmousedown" type="text/x-cindyscript">
+      pressed = true;
+    </script>
+
+    <script id="csmouseup" type="text/x-cindyscript">
+      pressed = false;
+    </script>
+
+    <script id="cskeydown" type="text/x-cindyscript">
+    </script>
+
+    <script type="text/javascript">
+    CindyJS({
+      scripts: "cs*",
+      autoplay: true,
+      ports: [{
+        id: "CSCanvas",
+        width: window.innerWidth,
+        height: window.innerHeight,
+        transform: [{
+          visibleRect: [0, 0, window.innerWidth, window.innerHeight]
+        }]
+      }],
+      images: {
+        "emptyphasediagram": "emptyphasediagram.png",
+        "fullphasediagram": "fullphasediagram.png",
+        "hightemp": "hightemp.png",
+        "hightemp_plusliquid": "hightemp_plusliquid.png",
+        "hightemp_plusvapor": "hightemp_plusvapor.png"
+      }
+    });
+    </script>
+  </body>
+</html>
