@@ -1,9 +1,3 @@
-let dt = 1/512;
-let minTicks = 8;
-
-let framesPerDouble = 60;
-let doubleCounter = 0;
-
 let W = window.innerWidth;
 let H = window.innerHeight;
 let unit;
@@ -130,78 +124,6 @@ function drawTicks() {
 
 }
 
-function oldDrawTicks(lambda, scale) {
-    strokeWeight(1);
-    stroke('gray');
-    
-    line(-5,H/2,W+5,H/2)
-    line(W/2,-5,W/2,H+5)
-
-    let vnum = H/(2*unit);
-    let hnum = W/(2*unit);
-    
-    for (let j = 1; j < vnum; j++) {
-        line(W/2-10, H/2 + j*unit*Math.sqrt(scale), W/2+10, H/2 + j*unit*Math.sqrt(scale));
-        line(W/2-10, H/2 - j*unit*Math.sqrt(scale), W/2+10, H/2 - j*unit*Math.sqrt(scale));
-
-        line(
-            W/2 - 5*(lambda+parity),
-            H/2 + (j - 1/2)*unit*Math.sqrt(scale),
-            W/2 + 5*(lambda+parity),
-            H/2 + (j - 1/2)*unit*Math.sqrt(scale)
-        );
-        line(
-            W/2 - 5*(lambda+parity),
-            H/2 - (j - 1/2)*unit*Math.sqrt(scale),
-            W/2 + 5*(lambda+parity),
-            H/2 - (j - 1/2)*unit*Math.sqrt(scale)
-        );
-    }
-
-    for (let j = 1; j < hnum; j++) {
-        line(W/2 + j*unit*scale, H/2-10, W/2 + j*unit*scale, H/2+10);
-        line(W/2 - j*unit*scale, H/2-10, W/2 - j*unit*scale, H/2+10);
-
-        line(
-            W/2 + (j - 1/4)*unit*scale,
-            H/2 - 5*(lambda+parity),
-            W/2 + (j - 1/4)*unit*scale,
-            H/2 + 5*(lambda+parity)
-        )
-        line(
-            W/2 + (j - 3/4)*unit*scale,
-            H/2 - 5*(lambda+parity),
-            W/2 + (j - 3/4)*unit*scale,
-            H/2 + 5*(lambda+parity)
-        )
-        line(
-            W/2 + (j - 1/2)*unit*scale,
-            H/2 - 5*(lambda+parity),
-            W/2 + (j - 1/2)*unit*scale,
-            H/2 + 5*(lambda+parity)
-        )
-
-        line(
-            W/2 - (j - 1/4)*unit*scale,
-            H/2 - 5*(lambda+parity),
-            W/2 - (j - 1/4)*unit*scale,
-            H/2 + 5*(lambda+parity)
-        )
-        line(
-            W/2 - (j - 3/4)*unit*scale,
-            H/2 - 5*(lambda+parity),
-            W/2 - (j - 3/4)*unit*scale,
-            H/2 + 5*(lambda+parity)
-        )
-        line(
-            W/2 - (j - 1/2)*unit*scale,
-            H/2 - 5*(lambda+parity),
-            W/2 - (j - 1/2)*unit*scale,
-            H/2 + 5*(lambda+parity)
-        )
-    }
-}
-
 function draw() {
     background(255);
 
@@ -214,15 +136,4 @@ function draw() {
     negB = resample(negB);
 
     tickIndex += 1;
-    
-    //doubleCounter += 1;
-    
-    //if (doubleCounter >= framesPerDouble) {
-        //doubleCounter = 0;
-        
-        //posB = resample(posB);
-        //negB = resample(negB);
-
-        //parity = 1-parity;
-    //}
 }
