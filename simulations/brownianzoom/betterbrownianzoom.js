@@ -4,8 +4,8 @@ let unit;
 
 //let delta = min(W,H) / minTicks;
 let sigma = 10; // Scale factor
-let delta = 1; // Initial step size
-let epsilon = 1/256; // power of 2 or 4
+let delta = 0.1; // Initial step size
+let epsilon = 1/1024; // power of 2 or 4
 
 let rho = Math.pow(2, epsilon);
 let rhosquared = Math.pow(4, epsilon);
@@ -48,13 +48,13 @@ function setup() {
     posB[1] = sigma * gaussianRandom(0, Math.sqrt(delta));
     negB[1] = sigma * gaussianRandom(0, Math.sqrt(delta));
 
-    for (let j = 2; j < 2048; j++) {
+    for (let j = 2; j < 4*2048; j++) {
         xaxis[j] = xaxis[j-1] * rhosquared;
 
         posB[j] = posB[j-1] + sigma * gaussianRandom(0, Math.sqrt(xaxis[j] - xaxis[j-1]));
         negB[j] = negB[j-1] + sigma * gaussianRandom(0, Math.sqrt(xaxis[j] - xaxis[j-1]));
     }
-    for (let j = 2; j < 4096; j++) {
+    for (let j = 2; j < 4*4096; j++) {
         yaxis[j] = yaxis[j-1] * rho;
     }
 
@@ -68,6 +68,7 @@ function drawPath(B, negate=false) {
     signum = negate ? -1 : 1;
 
     for (let j = 1; j < B.length; j++) {
+        strokeWeight(j*.0005 + 0.05)
         line(
             W/2 + signum * xaxis[j-1],
             H/2 + B[j-1],
@@ -86,8 +87,8 @@ function drawTicks() {
     line(W/2, -5, W/2, H+5)
 
     for (let j = 1; j < xaxis.length; j++) {
-        if (j % 20 == tickIndex % 20) {
-            let ticklength = min(10, 0.1*xaxis[j])
+        if (j % 40 == tickIndex % 40) {
+            let ticklength = min(10, 0.03*xaxis[j])
             line(
                 W/2 + xaxis[j],
                 H/2 - ticklength,
@@ -104,8 +105,8 @@ function drawTicks() {
     }
 
     for (let j = 1; j < yaxis.length; j++) {
-        if (j % 40 == tickIndex % 40) {
-            let ticklength = min(10, 0.1*yaxis[j])
+        if (j % 80 == tickIndex % 80) {
+            let ticklength = min(10, 0.03*yaxis[j])
             line(
                 W/2 - ticklength,
                 H/2 + yaxis[j],
