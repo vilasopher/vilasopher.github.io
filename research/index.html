@@ -10,7 +10,7 @@
 	<a href="..">Back to main page</a><br>
     <br>
 
-    The following pages contain short descriptions of some of my mathematical research.<br>
+    This page contains short descriptions of some of my mathematical research.<br>
     For a full list of my publications and preprints, see <a href="../cv">my CV</a> or <a href="https://arxiv.org/a/winstein_v_1.html">my works on arXiv</a>.<br>
 
     <br>
@@ -23,7 +23,7 @@
     where \(H\) is some function on graphs, called the <i>Hamiltonian</i>.
     Typically, \(H\) will be a linear combination of subgraph densities; the most famous example is the <i>edge-triangle model</i>, also called the <i>Strauss model</i>.
     Such ERGMs exhibit phase transitions where the macroscopic behavior changes sharply as the parameters are varied smoothly.
-    One may define <i>high-temperature</i> and <i>low-temperature</i> phases for these models, and generally the behavior at low temperatures is more difficult to understand rigorously.
+    One may define <i>high-temperature</i> and <i>low-temperature</i> regimes for these models, and generally the behavior at low temperatures is more difficult to understand rigorously.
 
     <figure style="text-align:center">
     <img src="ergm/phasediagram.png" alt="ERGM phase diagram" height="200">
@@ -37,14 +37,14 @@
     <img src="ergm/supercritical.png" alt="ERGM supercritical regime" height="200">
 
     <figcaption>
-        Left: the phase diagram of an ERGM with three parameters corresponding to edge count, wedge count, and triangle count.<br>
-        Certain portions of the diagram have been made transparent so that the inner detail, including the surface of phase transition, can be seen.<br>
-        Middle: the high-temperature phase of parameters, which is disjoint from the surface of phase transition.<br>
-        Right: the low-temperature phase, which includes the surface of phase transition.
+        <b>Left:</b> the phase diagram of an ERGM with three parameters corresponding to edge count, wedge count, and triangle count.
+        Certain portions of the diagram have been made transparent so that the inner detail, including the surface of phase transition, can be seen.
+        <b>Middle:</b> the high-temperature regime of parameters, which is disjoint from the surface of phase transition.
+        <b>Right:</b> the low-temperature regime, which includes the surface of phase transition.
     </figcaption>
     </figure>
 
-    In my first paper in this area <a href="https://arxiv.org/abs/2503.07571">[1]</a>, I prove a concentration inequality for ERGMs in the low-temperature phase,
+    In <a href="https://arxiv.org/abs/2503.07571">my first paper in this area</a>, I prove a concentration inequality for ERGMs in the low-temperature regime,
     which shows that Lipschitz observables of samples exhibit Gaussian-type concentration, with a rate which depends on the Lipschitz behavior of the observable.
     This extends <a href="https://arxiv.org/abs/1909.11080">the work of Ganguly and Nam</a> from the high-temperature to the low-temperature regime.
     Their applications also extend, and I obtain a bound on the Hamming-Wasserstein distance between an ERGM and a corresponding Erd&#337;s&ndash;R&eacute;nyi random graph,
@@ -58,7 +58,7 @@
     <br>
     <br>
 
-    In my second paper in this area <a href="https://arxiv.org/abs/2507.10531">[2]</a>, I prove a quantitative central limit theorem for the full edge count in an ERGM.
+    In <a href="https://arxiv.org/abs/2507.10531">my second paper in this area</a>, I prove a quantitative central limit theorem for the full edge count in an ERGM.
     This means that the number of edges, when properly rescaled, converges to a Gaussian random variable, and the rate of convergence can be quantified in terms of some natural 
     distances between probability distributions.
     This makes use of <a href="https://arxiv.org/abs/2404.01666">a new application of Stein's method due to Fang, Liu, Shao and Zhao</a>, which allows one to prove quantitative CLTs
@@ -75,23 +75,59 @@
 
     <h2>Independent Sets in a Percolated Hypercube</h2>
 
-    I will write a more detailed account of this work soon; for now, check out <a href="iqdp">this short summary</a>.
+    Independent sets are sets of vertices in a graph which contain no neighbors.
+    They are ubiquitous in computer science and statistical mechanics, as many questions can be rephrased in terms of independent sets in appropriate graphs;
+    moreover calculating the number of independent sets in an arbitrary graph is an NP-complete problem.
+    In joint work with <a href="https://mriganka.xyz">Mriganka Basu Roy Chowdhury</a> and <a href="https://www.stat.berkeley.edu/~sganguly/">Shirshendu Ganguly</a>,
+    we investigated the number of independent sets in a random subgraph of the Boolean hypercube obtained by performing <i>percolation</i> with parameter \(p\) (which is the
+    probability that an edge is retained, not deleted),
+    and characterized its distribution for a wide range of values of \(p\).
+    We denote the \(p\)-percolated \(d\)-dimensional hypercube by \(Q_{d,p}\), and the number of independent sets in this graph by \(i(Q_{d,p})\).
+
+    <figure style="text-align:center">
+        <img src="iqdp/independentset.png" alt="an independent set in the Petersen graph" height="200">
+        &nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;
+        <img src="iqdp/percolatedhypercube.png" alt="a percolated hypercube" height="200">
+
+        <figcaption>
+            <b>Left:</b> the blue vertices of the Petersen graph form an independent set.
+            <b>Right:</b> a sample of \(Q_{4,\frac{2}{3}}\).
+            Note that this graph is bipartite with an <i>even</i> side and an <i>odd</i> side; the parity here refers to the number of \(1\)s in the bit string corresponding to a vertex.
+        </figcaption>
+    </figure>
+
+    In <a href="https://arxiv.org/abs/2410.07080">our first paper in this area</a>, we develop a novel probabilistic technique to study the distribution of \(i(Q_{d,p})\).
+    For any fixed \(p > 0\), a typical independent set in \(Q_{d,p}\) will be contained mostly in the even or odd side, but will have many <i>defect vertices</i> in the opposite side.
+    We can study these defects using <i>polymer models</i>, which are a useful tool from statistical mechanics.
+    The use of polymer models for this problem was <a href="https://arxiv.org/abs/1907.00862">first done in the \(p=1\) case by Jenssen and Perkins</a>, and was <a href="https://arxiv.org/abs/2201.06127">adapted to an <i>annealed</i> version of the general case by Kronenberg and Spinka</a>.
+    We construct a new random polymer model that allows us to understand the <i>quenched</i> behavior of this model in a much more intricate way.
+    This leads to a central limit theorem for \(i(Q_{d,p})\) when \(p > \frac{2}{3}\), resolving a question asked by Kronenberg and Spinka, and we also obtain a lognormal limit at \(p = \frac{2}{3}\), which is
+    a critical value at which this model undergoes a concentration&ndash;anticoncentration phase transition.
 
     <br>
     <br>
 
-    <h2>References</h2>
+    In a forthcoming work, we extend our techniques below \(p = \frac{2}{3}\), and cover all values of \(p > 0.465\); notably, this is strictly less than \(p = \frac{1}{2}\), a value which is of much interest
+    in \(Q_{d,p}\) as it is a point of phase transition for many other features of this random graph.
+    We find that in fact there is no real substantial phase transition for \(i(Q_{d,p})\) at \(p = \frac{1}{2}\), although there is a more subtle way in which the formulas involved in our theorem must change at this value.
+    In order to extend our analysis, we need to consider cases where the defects behave in more complicated ways, with an intricate clustering structure appearing at \(p = 2 - \sqrt{2} \approx 0.586\) and below.
+    In this regime, the defects form either <i>monomers</i> or <i>dimers</i> (size-two polymers), and the regime which we cover (down to approximately \(0.465\)) is exactly the regime of parameters
+    for which these two classes of defects can be shown to be roughly independent of one another.
 
-    [1] <b>Concentration via metastable mixing, with applications to the supercritical exponential random graph</b><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Vilas Winstein</i><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arXiv preprint<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://arxiv.org/abs/2503.07571">arXiv:2503.07571</a><br>
+    <figure style="text-align:center">
+        <img src="iqdp/phasediagram.png" alt="phase diagram for independent sets in \(Q_{d,p}\)" height="200">
+
+        <figcaption>
+            A phase diagram for independent sets in \(Q_{d,p}\).
+            The numbers on the bottom indicate \(p\)-values below which more intricate types of polymers appear: dimers appear below \(2 - 2^{1/2}\), trimers appear below \(2 - 2^{2/3}\), et cetera.
+            On the top, we see a sequence of phase transitions beginning, on the right at \(p = \frac{2}{3}\), with the concentration-anticoncentration transition; the others are higher-order analogs of this transition which only affect
+            the formulas describing the model, not its overall probabilistic behavior.
+        </figcaption>
+    </figure>
 
     <br>
-
-    [2] <b>Quantitative central limit theorems in exponential random graphs</b><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Vilas Winstein</i><br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arXiv preprint<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://arxiv.org/abs/2507.10531">arXiv:2507.10531</a>
+    <br>
 
 </body>
