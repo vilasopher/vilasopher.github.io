@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Selected Research Works</title>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+</head>
+<body>
+	<h1>Selected Research Works</h1>
+
+	<a href="..">Back to main page</a><br>
+    <br>
+
+    The following pages contain short descriptions of some of my mathematical research.<br>
+    For a full list of my publications and preprints, see <a href="../cv">my CV</a> or <a href="https://arxiv.org/a/winstein_v_1.html">my works on arXiv</a>.<br>
+
+    <br>
+
+    <h2>Exponential Random Graph Model</h2>
+
+    ERGMs are exponential families of random graph models.
+    In other words, an ERGM is a probability distribution on the space of \(n\)-vertex simple graphs \(x\), given by
+    \[\mathbb{P}[x] \propto \exp \left( H(x) \right), \]
+    where \(H\) is some function on graphs, called the <i>Hamiltonian</i>.
+    Typically, \(H\) will be a linear combination of subgraph densities; the most famous example is the <i>edge-triangle model</i>, also called the <i>Strauss model</i>.
+    Such ERGMs exhibit phase transitions where the macroscopic behavior changes sharply as the parameters are varied smoothly.
+    One may define <i>high-temperature</i> and <i>low-temperature</i> phases for these models, and generally the behavior at low temperatures is more difficult to understand rigorously.
+
+    <figure style="text-align:center">
+    <img src="ergm/phasediagram.png" alt="ERGM phase diagram" height="200">
+    &nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;
+    <img src="ergm/subcritical.png" alt="ERGM subcritical regime" height="200">
+    &nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;
+    <img src="ergm/supercritical.png" alt="ERGM supercritical regime" height="200">
+
+    <figcaption>
+        Left: the phase diagram of an ERGM with three parameters corresponding to edge count, wedge count, and triangle count.<br>
+        Certain portions of the diagram have been made transparent so that the inner detail, including the surface of phase transition, can be seen.<br>
+        Middle: the high-temperature phase of parameters, which is disjoint from the surface of phase transition.<br>
+        Right: the low-temperature phase, which includes the surface of phase transition.
+    </figcaption>
+    </figure>
+
+    In my first paper in this area <a href="https://arxiv.org/abs/2503.07571">[1]</a>, I prove a concentration inequality for ERGMs in the low-temperature phase,
+    which shows that Lipschitz observables of samples exhibit Gaussian-type concentration, with a rate which depends on the Lipschitz behavior of the observable.
+    This extends <a href="https://arxiv.org/abs/1909.11080">the work of Ganguly and Nam</a> from the high-temperature to the low-temperature regime.
+    Their applications also extend, and I obtain a bound on the Hamming-Wasserstein distance between an ERGM and a corresponding Erd&#337;s&ndash;R&eacute;nyi random graph,
+    as well as a central limit theorem for the count of edges in certain small subcollections.
+    In order to prove these results, I introduce a new modification of <a href="https://arxiv.org/abs/math/0507526">a method due to Chatterjee</a> which allows one to prove
+    concentration inequalities using various markers of rapid mixing for an appropriate Markov chain.
+    To apply this to ERGMs, I make use of <a href="https://arxiv.org/abs/2208.13153">recent work of Bresler, Nagaraj and Nichani</a>, which proves <i>metastable mixing</i>
+    for low-temperature ERGMs; this can be viewed as a form of mixing "within a phase" for these models.
+    Additionally, a new argument which gets around the use of the FKG inequality in certain cases is also presented in this work.
+
+    <br>
+    <br>
+
+    In my second paper in this area <a href="https://arxiv.org/abs/2507.10531">[2]</a>, I prove a quantitative central limit theorem for the full edge count in an ERGM.
+    This means that the number of edges, when properly rescaled, converges to a Gaussian random variable, and the rate of convergence can be quantified in terms of some natural 
+    distances between probability distributions.
+    This makes use of <a href="https://arxiv.org/abs/2404.01666">a new application of Stein's method due to Fang, Liu, Shao and Zhao</a>, which allows one to prove quantitative CLTs
+    for observables under nonlinear exponential tilts of product measures (this includes ERGMs).
+    The key input in this argument is to show that the fluctuations of subgraph counts under ERGMs are driven by the fluctuations of the overall edge count; in other words, it is
+    a sort of <i>linearization</i> of the subgraph counts.
+    This was first done <a href="https://arxiv.org/abs/1807.07765">in the case of triangle counts by Sambale and Sinulis</a> via functional-analytic techniques.
+    The main contribution of my work is to supplant these techniques by a more intuitive argument which also yields improved bounds, and moreover works for the low-temperature
+    regime of parameters, which was previously unexplored.
+    My argument is also flexible enough to allow for a proof of a quantitative central limit theorem for the <i>degree</i> of a vertex, which was not previously known even in the
+    high-temperature regime.
+
+    <br>
+
+    <h2>Independent Sets in a Percolated Hypercube</h2>
+
+    I will write a more detailed account of this work soon; for now, check out <a href="iqdp">this short summary</a>.
+
+    <br>
+    <br>
+
+    <h2>References</h2>
+
+    [1] <b>Concentration via metastable mixing, with applications to the supercritical exponential random graph</b><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Vilas Winstein</i><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arXiv preprint<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://arxiv.org/abs/2503.07571">arXiv:2503.07571</a><br>
+
+    <br>
+
+    [2] <b>Quantitative central limit theorems in exponential random graphs</b><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>Vilas Winstein</i><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arXiv preprint<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://arxiv.org/abs/2507.10531">arXiv:2507.10531</a>
+
+</body>
