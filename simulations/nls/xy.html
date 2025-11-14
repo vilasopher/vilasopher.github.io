@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://cindyjs.org/dist/latest/Cindy.js"></script>
+    <script type="text/javascript" src="https://cindyjs.org/dist/latest/CindyGL.js"></script>
+    <title>XY Model</title>
+  </head>
+
+	<body style="margin:0;padding:0;overflow:hidden;">
+    <div id="CSCanvas"></div>
+
+    <script id="csinit" type="text/x-cindyscript">
+      use("CindyGL");
+
+      corners = screenbounds();
+      W = dist(corners_1, corners_2) / 2; 
+      H = dist(corners_1, corners_4) / 2;
+      temp = 1/2;
+      invrate = 0.05;
+      
+      L = [0, 0]; //bottom left corner
+      R = [W, 0]; //bottom right corner
+
+      pressed = false;
+
+      h = 0.1; // lattice spacing
+      k = -1; // focusing vs defocusing
+      p = 3; // nonlinearity power
+
+      createimage("state", W, H);
+
+      randomOnCircle() := (
+        t = random();
+        (cos(2*pi*t), sin(2*pi*t), 0);
+      );
+
+      colorplot(L, R, "state", randomOnCircle());
+
+      get(x, y) := imagergb(L, R, "state", (mod(x,W), mod(y,H)));
+
+      shiftedDotProduct(a,b) := (2*a_1-1) * (2*b_1-1) + (2*a_2-1) * (2*b_2-1);
+
+      energy(x, y, spin) := - (shiftedDotProduct(spin, get(x,y+1)) + shiftedDotProduct(spin, get(x,y-1)) + shiftedDotProduct(spin, get(x+1,y)) + shiftedDotProduct(spin, get(x-1,y)));
+
+      laplacian(x, y) := (- 4 * get(x,y) + get(x+1,y) + get(x-1,y) + get(x,y+1) + get(x,y-1)) / h ** 2;
+      nonlinearity(x, y) := k...
+
+      newstate(x, y) := (
+        current = get(x, y);
+        proposal = randomOnCircle();
+
+        currentEnergy = energy(x, y, current);
+        proposalEnergy = energy(x, y, proposal);
+
+        if (random() < exp((-1/temp)*(proposalEnergy - currentEnergy)), proposal, current);
+      );
+
+      textbox = polygon([(50,50), (50,80), (260,80), (260,50)]);
+
+      PUhue(t) := (
+          r = 1/16 * (9.59101375 + sqrt(2) * ((-0.1638840280998401) * cos(pi * 1 * (2 * t * 256 + 1) / (2 * 256)) + (5.555997028411666) * cos(pi * 2 * (2 * t * 256 + 1) / (2 * 256)) + (0.10136269979093476) * cos(pi * 3 * (2 * t * 256 + 1) / (2 * 256)) + (-0.3348261504492023) * cos(pi * 4 * (2 * t * 256 + 1) / (2 * 256)) + (0.10813924156582025) * cos(pi * 5 * (2 * t * 256 + 1) / (2 * 256)) + (-1.1710678921533157) * cos(pi * 6 * (2 * t * 256 + 1) / (2 * 256)) + (-0.11848672155996746) * cos(pi * 7 * (2 * t * 256 + 1) / (2 * 256)) + (0.10064937530280943) * cos(pi * 8 * (2 * t * 256 + 1) / (2 * 256)) + (-0.04165925325112454) * cos(pi * 9 * (2 * t * 256 + 1) / (2 * 256)) + (0.13203965400856765) * cos(pi * 10 * (2 * t * 256 + 1) / (2 * 256)) + (0.041491392336455823) * cos(pi * 11 * (2 * t * 256 + 1) / (2 * 256)) + (-0.13568179886894405) * cos(pi * 12 * (2 * t * 256 + 1) / (2 * 256)) + (-0.014002420522682212) * cos(pi * 13 * (2 * t * 256 + 1) / (2 * 256)) + (0.17720404026108177) * cos(pi * 14 * (2 * t * 256 + 1) / (2 * 256)) + (-0.0029599305322505834) * cos(pi * 15 * (2 * t * 256 + 1) / (2 * 256)) + (-0.09491820222342218) * cos(pi * 16 * (2 * t * 256 + 1) / (2 * 256)) + (0.0429784039650843) * cos(pi * 17 * (2 * t * 256 + 1) / (2 * 256)) + (-0.05811602278854562) * cos(pi * 18 * (2 * t * 256 + 1) / (2 * 256)) + (-0.001033807218273044) * cos(pi * 19 * (2 * t * 256 + 1) / (2 * 256)) + (0.001877799427802914) * cos(pi * 20 * (2 * t * 256 + 1) / (2 * 256)) + (0.008494217059908236) * cos(pi * 21 * (2 * t * 256 + 1) / (2 * 256)) + (-0.007089872478564) * cos(pi * 22 * (2 * t * 256 + 1) / (2 * 256)) + (0.006652700902573373) * cos(pi * 23 * (2 * t * 256 + 1) / (2 * 256)) + (0.00135754092512962) * cos(pi * 24 * (2 * t * 256 + 1) / (2 * 256))));
+          g = 1/16 * (10.176578124999999 + sqrt(2) * ((0.45735837894153003) * cos(pi * 1 * (2 * t * 256 + 1) / (2 * 256)) + (-1.596688943808486) * cos(pi * 2 * (2 * t * 256 + 1) / (2 * 256)) + (-0.28003851015250436) * cos(pi * 3 * (2 * t * 256 + 1) / (2 * 256)) + (-0.5693984257029612) * cos(pi * 4 * (2 * t * 256 + 1) / (2 * 256)) + (-0.03965078992593506) * cos(pi * 5 * (2 * t * 256 + 1) / (2 * 256)) + (-2.055625283907978) * cos(pi * 6 * (2 * t * 256 + 1) / (2 * 256)) + (0.04509379468972356) * cos(pi * 7 * (2 * t * 256 + 1) / (2 * 256)) + (-0.1307538535745865) * cos(pi * 8 * (2 * t * 256 + 1) / (2 * 256)) + (-0.03525955906551209) * cos(pi * 9 * (2 * t * 256 + 1) / (2 * 256)) + (-0.09585518341119573) * cos(pi * 10 * (2 * t * 256 + 1) / (2 * 256)) + (-0.019881850025921438) * cos(pi * 11 * (2 * t * 256 + 1) / (2 * 256)) + (-0.051279400881814846) * cos(pi * 12 * (2 * t * 256 + 1) / (2 * 256)) + (-0.010491979811003098) * cos(pi * 13 * (2 * t * 256 + 1) / (2 * 256)) + (-0.07146532220175408) * cos(pi * 14 * (2 * t * 256 + 1) / (2 * 256)) + (-0.011989268896069858) * cos(pi * 15 * (2 * t * 256 + 1) / (2 * 256)) + (-0.049890679570999436) * cos(pi * 16 * (2 * t * 256 + 1) / (2 * 256)) + (-0.012517626447758641) * cos(pi * 17 * (2 * t * 256 + 1) / (2 * 256)) + (-0.0969436765680422) * cos(pi * 18 * (2 * t * 256 + 1) / (2 * 256)) + (-0.0036037895561939234) * cos(pi * 19 * (2 * t * 256 + 1) / (2 * 256)) + (-0.016369070598969113) * cos(pi * 20 * (2 * t * 256 + 1) / (2 * 256)) + (-0.0077929597020823865) * cos(pi * 21 * (2 * t * 256 + 1) / (2 * 256)) + (-0.013117920997005015) * cos(pi * 22 * (2 * t * 256 + 1) / (2 * 256)) + (-0.0063996031219982355) * cos(pi * 23 * (2 * t * 256 + 1) / (2 * 256)) + (-0.009774274766805098) * cos(pi * 24 * (2 * t * 256 + 1) / (2 * 256))));
+          b = 1/16 * (8.1017579375 + sqrt(2) * ((-4.866578824208512) * cos(pi * 1 * (2 * t * 256 + 1) / (2 * 256)) + (-3.3906989714280487) * cos(pi * 2 * (2 * t * 256 + 1) / (2 * 256)) + (2.8923772755795705) * cos(pi * 3 * (2 * t * 256 + 1) / (2 * 256)) + (-0.005335044108666849) * cos(pi * 4 * (2 * t * 256 + 1) / (2 * 256)) + (0.8014148792643709) * cos(pi * 5 * (2 * t * 256 + 1) / (2 * 256)) + (-1.1043932183608032) * cos(pi * 6 * (2 * t * 256 + 1) / (2 * 256)) + (0.3548350446754125) * cos(pi * 7 * (2 * t * 256 + 1) / (2 * 256)) + (-0.011485892914085546) * cos(pi * 8 * (2 * t * 256 + 1) / (2 * 256)) + (0.17036968009974462) * cos(pi * 9 * (2 * t * 256 + 1) / (2 * 256)) + (0.0064757090937861885) * cos(pi * 10 * (2 * t * 256 + 1) / (2 * 256)) + (0.07245256074628001) * cos(pi * 11 * (2 * t * 256 + 1) / (2 * 256)) + (0.06536526154433589) * cos(pi * 12 * (2 * t * 256 + 1) / (2 * 256)) + (0.016441296430820707) * cos(pi * 13 * (2 * t * 256 + 1) / (2 * 256)) + (-0.04519299248985208) * cos(pi * 14 * (2 * t * 256 + 1) / (2 * 256)) + (0.10049045023138078) * cos(pi * 15 * (2 * t * 256 + 1) / (2 * 256)) + (-0.005454654890681627) * cos(pi * 16 * (2 * t * 256 + 1) / (2 * 256)) + (0.07624044074522761) * cos(pi * 17 * (2 * t * 256 + 1) / (2 * 256)) + (-0.023673265207680802) * cos(pi * 18 * (2 * t * 256 + 1) / (2 * 256)) + (0.049236180577721486) * cos(pi * 19 * (2 * t * 256 + 1) / (2 * 256)) + (0.006732135444635449) * cos(pi * 20 * (2 * t * 256 + 1) / (2 * 256)) + (0.018736326334832458) * cos(pi * 21 * (2 * t * 256 + 1) / (2 * 256)) + (0.006077159544606674) * cos(pi * 22 * (2 * t * 256 + 1) / (2 * 256)) + (0.022623660807553285) * cos(pi * 23 * (2 * t * 256 + 1) / (2 * 256)) + (0.005740166062322229) * cos(pi * 24 * (2 * t * 256 + 1) / (2 * 256))));
+        (r,g,b);
+      );
+
+      colorfunction(spin) := (
+        x = 2*spin_1-1;
+        y = 2*spin_2-1;
+        t = (arctan2(x,y)+pi)/(2*pi);
+        // TODO: perceptually uniformize the color space!
+        // colors_(t * 256 + 1); // WHY DOESN'T THIS WORK??????
+        (-1,0,0);
+        PUhue(t);
+      );
+    </script>
+
+    <script id="csdraw" type="text/x-cindyscript">
+      repeat(20,
+        colorplot(L, R, "state",
+          if (random() < invrate, newstate(#.x, #.y), get(#.x, #.y))
+        );
+      );
+      colorplot(colorfunction(imagergb("state", #)));
+
+      if (pressed, (
+          temp = max([0.000001,(mouse().y / H) * 2]);
+          fill(textbox, color->(1,1,1));
+          drawtext((60, 60), "temperature = " + temp);
+        );
+      );
+    </script>
+
+    <script id="csmousedown" type="text/x-cindyscript">
+      pressed = true;
+    </script>
+
+    <script id="csmouseup" type="text/x-cindyscript">
+      pressed = false;
+    </script>
+
+    <script type="text/javascript">
+    CindyJS({
+      scripts: "cs*",
+      autoplay: true,
+      ports: [{
+        id: "CSCanvas",
+        width: window.innerWidth,
+        height: window.innerHeight,
+        transform: [{
+          visibleRect: [0, 0, window.innerWidth, window.innerHeight]
+        }]
+      }]
+    });
+    </script>
+  </body>
+</html>

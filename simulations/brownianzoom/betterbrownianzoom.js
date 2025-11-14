@@ -4,8 +4,8 @@ let unit;
 
 //let delta = min(W,H) / minTicks;
 let sigma = 10; // Scale factor
-let delta = 0.1; // Initial step size
-let epsilon = 1/1024; // power of 2 or 4
+let delta = 0.05; // Initial step size
+let epsilon = 1/768; // power of 2 or 4
 
 let rho = Math.pow(2, epsilon);
 let rhosquared = Math.pow(4, epsilon);
