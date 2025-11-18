@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://cindyjs.org/dist/latest/Cindy.js"></script>
+    <script type="text/javascript" src="https://cindyjs.org/dist/latest/CindyGL.js"></script>
+    <title>Reaction diffusion</title>
+  </head>
+
+  <body>
+    <div id="CSCanvas"></div>
+
+    <script id="csinit" type="text/x-cindyscript">
+      p = 3;
+      h = 0.1;
+      dt = 0.0001;
+      k = -1;
+
+      createimage("state", 512, 512);
+
+      get(x, y) :=  (
+        rgb = imagergb("state", (x,y), interpolate->false);
+        (rgb.r, rgb.g)
+      );
+
+      store(q) := (q_1, q_2, 0);
+
+      initialimage(x) := store((-1.0+2.0*random(), -1.0+2.0*random())); //random values as starting image
+      colorplot("state", initialimage(#)); 
+
+      kernel = [[0.0, 0.2, 0.0],
+                 [0.25, -1, 0.25],
+                 [0.00, 0.25, 0.0]];
+
+      laplacian(x, y) := (
+        sum( apply(-1..1, dy,
+            sum( apply(-1..1, dx,
+                kernel_(dy+2)_(dx+2)*get(x+dx, y+dy)
+            ))
+          )) / h^2
+      );
+
+      nonlinearity(x, y) := (
+        (get(x, y)_1 ^ 2 + get(x, y)_2 ^ 2)^(p-1) * get(x,y)
+      );
+
+      newstate(x, y) := (
+        u = get(x,y);
+        l = laplacian(x, y);
+        n = nonlinearity(x, y);
+
+        deltau = [- l_2 - k * n_2, l_1 + k * n_1] * dt;
+
+        store(u+deltau)
+      );
+    </script>
+
+    <script id="csmousedown" type="text/x-cindyscript">
+      errc(mouse());
+      colorplot("state", store(min(1,|#-mouse()|/50)*get(#.x, #.y)));
+    </script>
+
+    <script id="csdraw" type="text/x-cindyscript">    
+      repeat(1, //do 1 steps of iteration in each drawing step
+        colorplot("state", newstate(#.x, #.y)); //overwrite texture "state"
+      );
+      //drawimage((0,0),(512,0), "state");
+      colorplot(
+        u = get(#.x, #.y);
+        (u_1 ^ 2 + u_2 ^ 2)
+      )
+    </script>
+
+    <script type="text/javascript">
+    CindyJS({
+      scripts: "cs*",
+      autoplay: true,
+      ports: [{
+        id: "CSCanvas",
+        width: 512,
+        height: 512,
+        transform: [{
+          visibleRect: [0, 512, 512, 0]
+        }]
+      }]
+    });
+    </script>
+  </body>
+</html>
