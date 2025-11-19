@@ -11,9 +11,10 @@
 
     <script id="csinit" type="text/x-cindyscript">
       p = 3;
-      h = 0.1;
-      dt = 0.0001;
-      k = -1;
+      h = 0.01;
+      dt = 0.00001;
+      k = 0;
+      r = 50;
 
       createimage("state", 512, 512);
 
@@ -24,12 +25,12 @@
 
       store(q) := (q_1, q_2, 0);
 
-      initialimage(x) := store((-1.0+2.0*random(), -1.0+2.0*random())); //random values as starting image
+      initialimage(x) := store((exp(-((x_1 - 256)^2+(x_2 - 256)^2)/(2*r^2)),0));
       colorplot("state", initialimage(#)); 
 
-      kernel = [[0.0, 0.2, 0.0],
-                 [0.25, -1, 0.25],
-                 [0.00, 0.25, 0.0]];
+      kernel = [[0.05, 0.2, 0.05],
+                 [0.2, -1, 0.2],
+                 [0.05, 0.2, 0.05]];
 
       laplacian(x, y) := (
         sum( apply(-1..1, dy,
@@ -66,7 +67,7 @@
       //drawimage((0,0),(512,0), "state");
       colorplot(
         u = get(#.x, #.y);
-        (u_1 ^ 2 + u_2 ^ 2)
+        hue(arctan2(u)/(2*pi)) * (u_1^2 + u_2^2)
       )
     </script>
 
