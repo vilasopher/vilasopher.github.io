@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Math 98A Spring 2026</title>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+  </style>
+</head>
+
+
+<body>
+
+  <header style="margin-top: 70px;">
+    <h2 style="text-align: center">Math 98A (intro to MATLAB for 128A) Spring 2026</h2>
+  </header>
+  <article>
+    <h3><a id="info"></a>Course Information</h3>
+    <ul>
+      <li><b>Instructor</b>: Vilas Winstein, <a href="mailto:vilas@berkeley.edu">vilas@berkeley.edu</a>.
+      </li>
+      <li><b>Lectures</b>: Tuesday and Thursday 5:00-6:30 pm (009) and 6:30-8:00 (010) in Evans hall B3A.</li>
+      <li><b>Office hours</b>: By appointment</li>
+      <li><b>Other course websites</b>: 
+	      <a href="https://bcourses.berkeley.edu/courses/1553329">bCourses</a>, where confidential information will be located (such as course grades or solutions).</li>
+      <li><b>Credit</b>:
+        I want to thank <a href="https://math.berkeley.edu/~tom_schang/my-website/">Tom Schang</a>
+        for providing me with course materials (he was also provided materials by
+        <a href="https://mheinz757.github.io">Michael Heinz</a> and <a href="https://math.berkeley.edu/~andrewshi/Teaching.html">Andrew Shi</a>).
+    </ul>
+  </article>
+
+  <article>
+    <h3><a id="policies"></a>Course Policies</h3>
+    <ul>
+      <li><b>Behaviour</b>: this course is a fast 5 lecture course where we go from little-to-no idea how to program to
+        being able to complete 128A assignments. As such, it is imperative that have a welcoming learning environment
+        where everyone feels safe participating, trying, and making mistakes. Always be respectful, helpful, and
+        encouraging of each other. Offensive/rude/hurtful comments and behaviour are not tolerated and may negatively
+        impact your course grade. </li>
+      <li><b>Grades</b>: there will be 4 homeworks and 1 project. Homeworks are worth 15 points each. They are graded
+        for effort/completion. The project is worth 40 points and is graded for correctness. A pass in the class
+        requires a score of 70% or better on the homeworks <em>and</em> 70% or better on the project.</li>
+      <li><b>Extensions, etc.</b>: everyone has exactly 3 late days. Only one late day can be used per assignment (so
+        that I can post solutions for the class before the next assignment is due). I know this course is fast. I want
+        to keep everyone pushing through so that it is out of the way before the first round of midterms comes.</li>
+      <li><b>Academic Integrity</b>. In this class we are all trying to learn a new language as fast as possible. Please
+        work together on everything. When it comes to completing class assignments, some things that are explicitly not
+        allowed are looking/copying someone else's code directly or from an online resource. Instead, collaborate by
+        describing your algorithm with words, pictures, etc., but figure out the implementation details individually.
+        For online resources, a good guideline is do not search the problem word for word. Instead, figure out one of
+        the steps you need to solve the problem (for example, creating an n-by-n identity matrix).</li>
+      <li><b>Inclusivity</b>. I want to help each and every one of you succeed, with each and every one of your diverse
+        identities. If you ever feel unsafe or unwelcome, I truly want to know and fix what I am doing, even if you let
+        me know through an e-mail or a friend or whatever feels comfortable.</li>
+      <li><b>DSP</b>. If you are a student with DSP accommodations that apply to this course, please contact me ASAP.
+        The course is very short, so it is very important that you let me know before it's too late.</li>
+    </ul>
+  </article>
+
+  <article>
+    <h3><a id="resources"></a>Resources</h3>
+    <ul>
+      <li><b>MATLAB</b>: MATLAB can be downloaded for free using the UC Berkeley campus license (<a
+          href="https://www.mathworks.com/academia/tah-portal/berkeley-731130.html">here</a>). I am not able to help
+        with MATLAB installation issues. Please check the support links on <a
+          href="https://software.berkeley.edu/matlab®">this website</a> if you require assistance.</li>
+      <li><b>Tutorials/books</b>:
+        <br>Christos Xenophontos, <a href="http://math.loyola.edu/~loberbro/matlab/Beginners_guide_to_MATLAB.pdf">A
+          Beginner’s Guide to MATLAB</a>;
+        <br>R. J. Braun, <a href="files/braun.pdf">Beginning MATLAB Exercises</a>;
+        <br>Fan and Van Loan, <a
+          href="https://epubs-siam-org.libproxy.berkeley.edu/doi/book/10.1137/1.9780898717648">Insight through
+          Computing</a>.
+        <br>Hahn and Valentine, <a
+          href="https://www-sciencedirect-com.libproxy.berkeley.edu/book/9780081008775/essential-matlab-for-engineers-and-scientists">Essential
+          MATLAB for Engineers and Scientists</a>
+        <br> Cornell's <a href="https://courses.cs.cornell.edu/cs1112/2018sp/#templates/syllabus?section=lectures">intro
+          to computing using MATLAB course</a> (particularly lectures 2-14). Please note that this website is not to be
+        shared outside of this course, I received special permission to share it with students in this course only.
+      </li>
+      <li><b>Practice Problems</b>:
+        <br><a href="https://projecteuler.net/archives">Project Euler</a>;
+        <br><a href="https://www.hackerrank.com/dashboard">HackerRank</a>, especially the sections on algorithms and
+        mathematics;
+        <br><a href="https://www.geeksforgeeks.org/">Geeks for Geeks</a>, especially the section of mathematical
+        algorithms.
+      </li>
+    </ul>
+  </article>
+
+  <article>
+    <h3><a id="schedule"></a>Schedule</h3>
+    <table>
+      <tr>
+        <th style="width: 140px;">Lecture</th>
+        <th>Topic</th>
+        <th>Resources</th>
+        <th style="width: 140px;">Homework</th>
+      </tr>
+      <tr>
+        <td>Lecture 1<br>(01/20)</td>
+        <td>Coding basics, math in MATLAB</td>
+        <td>
+          <a href="files/lec1.pdf">slides</a>,
+	  <!-- <a href="files/lec1_annotated.pdf">annotated</a>, -->
+          <a href="files/braun.pdf">Braun tutorial</a>
+        </td>
+        <td>
+          <a href="files/hw1.pdf">homework 1</a>
+          <br>(due 01/27)
+          <br><a href="files/hw1.zip">code</a>
+	  <br><a href="files/check_hw1.m">submission checker</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Lecture 2<br>(01/022)</td>
+        <td>Matrices and vectors</td>
+        <td>
+          <a href="files/lec2.pdf">slides</a>,
+	  <a href="files/code2.zip">code</a>, 
+          <a href="files/braun.pdf">Braun tutorial</a>
+        </td>
+        <td>
+          <a href="files/hw1.pdf">homework 1</a>
+          <br>(due 01/27)
+          <br><a href="files/hw1.zip">code</a>
+	  <br><a href="files/check_hw1.m">submission checker</a>
+        </td>
+      </tr>
+      <tr>
+        <td>Lecture 3<br>(01/27)</td>
+        <td>Functions</td>
+        <td>
+          <a href="files/lec3.pdf">slides</a>,
+	  <a href="files/code3.zip">code</a>,
+          <a href="https://www.mathworks.com/help/matlab/ref/function.html">MATLAB docs on functions</a>
+        </td>
+	<td>
+		<a href="files/hw2.pdf">homework 2</a><br>(due 01/30)
+		<br><a href="files/check_hw2.m">submission checker</a>
+	</td>
+      </tr>
+      <tr>
+        <td>Lecture 4<br>(01/29)</td>
+        <td>Control flow</td>
+        <td>
+          <a href="files/lec4.pdf">slides</a>,
+	  <a href="files/code4.zip">code</a>,
+          <a
+            href="https://www.mathworks.com/help/matlab/control-flow.html?category=control-flow&s_tid=CRUX_gn_documentation_control-flow">MATLAB
+            docs on control flow</a>
+        </td>
+        <td>
+		<a href="files/hw3.pdf">homework 3</a><br>(due 02/03)
+		<br><a href="files/check_hw3.m">submission checker</a>
+	</td>
+      </tr>
+      <tr>
+        <td>Lecture 5<br>(02/03)</td>
+        <td>Plotting</td>
+        <td>
+          <a href="files/lec5.pdf">slides</a>,
+          <!-- <a href="files/lec4_annotated.pdf">annotated</a>, -->
+	  <a href="files/code5.zip">code</a>,
+          MATLAB docs on <a href="https://www.mathworks.com/help/matlab/ref/plot.html">plot</a> and on <a
+            href="https://www.mathworks.com/help/matlab/ref/scatter.html">scatter</a>
+        </td>
+        <td><a href="files/hw4.pdf">homework 4</a><br>(due 02/06)</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><a href="files/project.pdf">final project</a><br>(due 02/10)</td>
+      </tr>
+    </table>
+    <ul>
+      <li>All assignments (homeworks and project) should be turned in on bCourses. If you submit after 11:59 pm, your
+        submission will automatically marked late (remember you only get 3 late days in total).</li>
+      <li>Solutions to homework are released 24 hours after the due date on bCourses.</li>
+    </ul>
+    <div style="margin-top:30%">
+    </div>
+</body>
+
+</html>
