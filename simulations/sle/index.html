@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://cindyjs.org/dist/latest/Cindy.js"></script>
+    <script type="text/javascript" src="https://cindyjs.org/dist/latest/CindyGL.js"></script>
+    <title>Schramm-Loewner Evolution</title>
+  </head>
+
+	<body style="margin:0;padding:0;overflow:hidden;">
+    <div id="CSCanvas"></div>
+
+    <script id="csinit" type="text/x-cindyscript">
+      use("CindyGL");
+
+      corners = screenbounds();
+      W = dist(corners_1, corners_2); 
+      H = dist(corners_1, corners_4);
+      border = 10;
+      dt = 0.0001;
+      kappa = 1.5;
+      tol = 0.0001;
+      B = 0;
+
+      javascript("set_kappa()");
+      
+      L = [0, 0]; //bottom left corner
+      R = [W, 0]; //bottom right corner
+
+      pressed = false;
+
+      createimage("state", W, H);
+
+      get(xy) := (
+        rgb = imagergb("state", xy);
+        (rgb.r, rgb.g)
+      );
+
+      store(q) := (q_1, q_2, 0);
+
+      colorplot(L, R, "state",
+        z = (complex(#) - W/2) / H * 2;
+        store((re(z),im(z)))
+      );
+
+    </script>
+
+    <script id="csdraw" type="text/x-cindyscript">
+      B = B + sqrt(kappa * dt) * randomnormal();
+
+      colorplot(L, R, "state",
+        z = complex(get(#));
+        dz = 2*dt / (z - B);
+        z = z + dz;
+        store((re(z),im(z)));
+      );
+
+      colorplot(
+        z = complex(get(#));
+        brightness = if(1==1, 1, 0.5);
+        brightness = max(min(2 - im(z),1),0);
+        hue(re(z) / W * H * 5) * brightness;
+      );
+
+      linesize(10);
+      linecolor([0,0,0]);
+      draw(((B * H / 2 + W/2),0),((B * H / 2 + W/2),20));
+
+      drawtext((20,H-40), "$\kappa = " + kappa + "$", size->40, color->(1,1,1));
+    </script>
+
+    <script id="csmousedown" type="text/x-cindyscript">
+      pressed = true;
+    </script>
+
+    <script id="csmouseup" type="text/x-cindyscript">
+      pressed = false;
+    </script>
+
+    <script type="text/javascript">
+    const params = new URLSearchParams(window.location.search);
+    const kappa = parseFloat(params.get("kappa")) ?? 1.5;
+
+    var cdy = CindyJS({
+      scripts: "cs*",
+      autoplay: true,
+      ports: [{
+        id: "CSCanvas",
+        width: window.innerWidth,
+        height: window.innerHeight,
+        transform: [{
+          visibleRect: [0, 0, window.innerWidth, window.innerHeight]
+        }]
+      }]
+    });
+
+    function set_kappa() {
+      cdy.evokeCS('kappa = ' + kappa + ';');
+    }
+
+    </script>
+  </body>
+</html>
