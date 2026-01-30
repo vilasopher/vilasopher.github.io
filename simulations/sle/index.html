@@ -57,7 +57,7 @@
       colorplot(
         z = complex(get(#));
         brightness = if(1==1, 1, 0.5);
-        brightness = max(min(2 - im(z),1),0);
+        brightness = max(min(((2 - im(z))/2)^2,1),0);
         hue(re(z) / W * H * 5) * brightness;
       );
 
