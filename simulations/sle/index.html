@@ -78,7 +78,10 @@
 
     <script type="text/javascript">
     const params = new URLSearchParams(window.location.search);
-    const kappa = parseFloat(params.get("kappa")) ?? 1.5;
+    var kappa = 1.5;
+    if (params.has("kappa")) {
+      kappa = parseFloat(params.get("kappa")) ?? 1.5;
+    }
 
     var cdy = CindyJS({
       scripts: "cs*",
