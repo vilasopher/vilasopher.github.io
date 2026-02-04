@@ -77,7 +77,7 @@
       colorplot(colorfunction(imagergb("state", #)));
 
       if (pressed, (
-          temp = max([0.000001,(mouse().y / H) * 2]);
+          temp = max([0.000001,(mouse().y / H)]);
           fill(textbox, color->(1,1,1));
           drawtext((60, 60), "temperature = " + temp);
         );
