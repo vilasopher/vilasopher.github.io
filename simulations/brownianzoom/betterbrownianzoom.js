@@ -1,6 +1,5 @@
 let W = window.innerWidth;
 let H = window.innerHeight;
-let unit;
 
 //let delta = min(W,H) / minTicks;
 let sigma = 10; // Scale factor
@@ -9,6 +8,7 @@ let epsilon = 1/768; // power of 2 or 4
 
 let rho = Math.pow(2, epsilon);
 let rhosquared = Math.pow(4, epsilon);
+let xpoints = Math.ceil(Math.log(W) / epsilon);
 
 let xaxis = [0];
 let yaxis = [0];
@@ -48,17 +48,17 @@ function setup() {
     posB[1] = sigma * gaussianRandom(0, Math.sqrt(delta));
     negB[1] = sigma * gaussianRandom(0, Math.sqrt(delta));
 
-    for (let j = 2; j < 4*2048; j++) {
+    for (let j = 2; j < xpoints; j++) {
         xaxis[j] = xaxis[j-1] * rhosquared;
 
         posB[j] = posB[j-1] + sigma * gaussianRandom(0, Math.sqrt(xaxis[j] - xaxis[j-1]));
         negB[j] = negB[j-1] + sigma * gaussianRandom(0, Math.sqrt(xaxis[j] - xaxis[j-1]));
     }
-    for (let j = 2; j < 4*4096; j++) {
+    for (let j = 2; j < 2*xpoints; j++) {
         yaxis[j] = yaxis[j-1] * rho;
     }
 
-    frameRate(60);
+    frameRate(120);
 }
 
 function drawPath(B, negate=false) {
