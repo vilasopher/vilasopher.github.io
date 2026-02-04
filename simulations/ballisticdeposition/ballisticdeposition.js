@@ -3,19 +3,20 @@ const numcolumns = window.innerWidth / blocksize;
 const numrows = window.innerHeight / blocksize;
 const rate = 32;
 
+const params = new URLSearchParams(window.location.search);
+var ballistic = true;
+if (params.has("ballistic")) {
+    ballistic = !(params.get("ballistic") == "false");
+}
+
 let keepgoing = true
+let overflow = ballistic ? 50 : 200;
 let h = 0
 
 let columnheights = []
 let columnclocks = []
 
 let columns = []
-
-const params = new URLSearchParams(window.location.search);
-var ballistic = true;
-if (params.has("ballistic")) {
-    ballistic = !(params.get("ballistic") == "false");
-}
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
@@ -62,7 +63,7 @@ function draw() {
 
         columnheights[c] = blockheight;
 
-        if (columnheights[c] >= numrows + 50) {
+        if (columnheights[c] >= numrows + overflow) {
           keepgoing = false;
         }
       }
