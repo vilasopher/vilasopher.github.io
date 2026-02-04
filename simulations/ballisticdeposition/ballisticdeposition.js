@@ -11,6 +11,12 @@ let columnclocks = []
 
 let columns = []
 
+const params = new URLSearchParams(window.location.search);
+var ballistic = true;
+if (params.has("ballistic")) {
+    ballistic = !(params.get("ballistic") == "false");
+}
+
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   
@@ -44,6 +50,10 @@ function draw() {
         columnclocks[c] = exponential_tick();
 
         let blockheight = max(columnheights[c] + 1, columnheights[c-1], columnheights[c+1]);
+
+        if (!ballistic) {
+          blockheight = columnheights[c]+1;
+        }
         
         h = (h + 0.005) % 360
         let col = color('hsl('+String(Math.floor(h))+', 100%, 50%)');
