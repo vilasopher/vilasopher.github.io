@@ -28,8 +28,12 @@
 					
 					for (let j = 0; j < N; j++) {
 						if (j != i) {
-							DBM[i][cqpos] += dt / (DBM[i][(cqpos+width-1)%width] - DBM[j][(cqpos+width-1)%width]);
+							DBM[i][cqpos] += dt / Math.min(100,(DBM[i][(cqpos+width-1)%width] - DBM[j][(cqpos+width-1)%width]));
 						}
+					}
+
+					if(i > 0 && DBM[i][cqpos] >= DBM[i-1][cqpos]) {
+						DBM[i][cqpos] = DBM[i-1][cqpos]-0.01;
 					}
 					
 					let noise = gaussianRandom(mean=0, stdev=Math.sqrt(dt));
