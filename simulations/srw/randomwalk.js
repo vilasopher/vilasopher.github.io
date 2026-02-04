@@ -13,7 +13,7 @@ if (params.has("fast")) {
 let W = window.innerWidth;
 let H = window.innerHeight;
 let hscreenprop = 0.9;
-let vscreenprop = 0.25;
+let vscreenprop = 0.2;
 
 let traces = [];
 
