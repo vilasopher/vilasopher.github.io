@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Poissonian Last Passage Percolation</title>
+            <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
+		<script>
+			const boxsize = Math.min(window.innerWidth, window.innerHeight) * 0.95;
+
+			var points = [];
+			var time = 0;
+			var nextTick = 0;
+			var sidelength = 50;
+			var noisestrength = 0.01;
+
+			var ox = (window.innerWidth - boxsize)/2;
+			var oy = (window.innerHeight + boxsize)/2;
+
+			function expRV(mean = 1) {
+				var u = Math.random();
+				return -Math.log(1.0 - u) / mean;
+			}
+
+			function normalRV(mean=0, stdev=1) {
+				let u = 1 - Math.random(); 
+				let v = Math.random();
+				let z = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+				return z * stdev + mean;
+			}
+
+			function insertPoint(p) {
+				let start = -1;
+				let end = points.length;
+				let mid;
+
+				while (start < end - 1) {
+					mid = Math.floor((start + end) / 2);
+
+					if (p[0] < points[mid][0]) {
+						end = mid;
+					} else {
+						start = mid;
+					}
+				}
+
+				points.splice(end, 0, p);
+			}
+
+			function perturbPoints() {
+				for (let i = 0; i < points.length; i++) {
+					points[i][0] += normalRV(0,noisestrength);
+					points[i][1] += normalRV(0,noisestrength);
+
+					if (points[i][0] < 0) {
+						points[i][0] = 0;
+					}
+					if (points[i][1] < 0) {
+						points[i][1] = 0;
+					}
+					if (points[i][0] > sidelength) {
+						points[i][0] = sidelength;
+					}
+					if (points[i][1] > sidelength) {
+						points[i][1] = sidelength;
+					}
+				}
+
+				newpoints = [].concat(points);
+				points = [];
+				for (let i = 0; i < newpoints.length; i++) {
+					insertPoint(newpoints[i]);
+				}
+
+				// TODO: let points be added or removed
+			}
+
+			function longestIncreasingSubsequence() {
+				var P = [];
+				var M = [-1];
+				var L = 0;
+
+				for (let i = 0; i < points.length; i++) {
+					var lo = 1;
+					var hi = L+1;
+
+					while (lo < hi) {
+						mid = lo + Math.floor((hi-lo)/2);
+						if (points[M[mid]][1] >= points[i][1]) {
+							hi = mid;
+						} else {
+							lo = mid + 1;
+						}
+					}
+
+					var newL = lo;
+					P[i] = M[newL-1];
+					M[newL] = i;
+
+					if (newL > L) {
+						L = newL;
+					}
+				}
+
+				var S = [];
+				var k = M[L];
+				for (let j = L-1; j >= 0; j--) {
+					S[j] = points[k];
+					k = P[k];
+				}
+
+				return S;
+			}
+
+			function drawBox() {
+				strokeWeight(5);
+				stroke(0,0,255);
+				line(ox,oy,ox+boxsize,oy);
+				line(ox,oy,ox,oy-boxsize);
+				line(ox+boxsize,oy,ox+boxsize,oy-boxsize);
+				line(ox,oy-boxsize,ox+boxsize,oy-boxsize);
+			}
+
+			function drawPoints() {
+				strokeWeight(40 / Math.sqrt(sidelength));
+				stroke(0,0,0);
+				for (let i = 0; i < points.length; i++) {
+					point(ox + boxsize * points[i][0] / sidelength, oy - boxsize * points[i][1] / sidelength);
+				}
+			}
+
+			function drawGeodesic() {
+				strokeWeight(20 / Math.sqrt(sidelength));
+				stroke(255,0,0);
+
+				var LIS = longestIncreasingSubsequence();
+
+				if (LIS.length == 0) {
+					line(ox,oy,ox+boxsize,oy-boxsize);
+					return;
+				}
+
+				line(
+					ox,
+					oy,
+					ox + boxsize * LIS[0][0] / sidelength,
+					oy - boxsize * LIS[0][1] / sidelength
+				);
+
+				for (let i = 0; i < LIS.length-1; i++) {
+					line(
+						ox + boxsize * LIS[i][0] / sidelength,
+						oy - boxsize * LIS[i][1] / sidelength,
+						ox + boxsize * LIS[i+1][0] / sidelength,
+						oy - boxsize * LIS[i+1][1] / sidelength
+					);
+				}
+
+				line(
+					ox + boxsize * LIS[LIS.length-1][0] / sidelength,
+					oy - boxsize * LIS[LIS.length-1][1] / sidelength,
+					ox + boxsize,
+					oy - boxsize
+				);
+
+				strokeWeight(max(20/Math.sqrt(sidelength),10))
+				point(ox,oy);
+				point(ox+boxsize,oy-boxsize);
+			}
+
+			function setup(){
+				var canvas = createCanvas(window.innerWidth, window.innerHeight);
+				frameRate(60);
+
+				for (let i = 0; i < sidelength*sidelength; i++) {
+					insertPoint([Math.random() * sidelength, Math.random() * sidelength]);
+					console.log(points);
+				}
+			}
+
+			function draw(){
+				perturbPoints();
+				background(255);
+				drawPoints();
+				drawBox();
+				drawGeodesic();
+			}
+		</script>
+	</head>
+	<body style="margin:0;padding:0;overflow:hidden;"></body>
+</html>
