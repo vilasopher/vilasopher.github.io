@@ -2,9 +2,11 @@ let W = window.innerWidth;
 let H = window.innerHeight;
 
 let particlesize = 10;
-let numparticles = Math.ceil(W/particlesize);
+let numrealities = 5;
+let numparticles = numrealities*Math.ceil(W/particlesize);
 let spacingratio = 1.25;
-let dy = 4;
+let dy = particlesize * spacingratio;
+let shiftframes = 240;
 
 let rate = 0.05;
 
@@ -33,10 +35,32 @@ function setup() {
         }
         indices[i] = i;
     }
+
+    currentycoord = H/2 - sumonleft() * dy;
+}
+
+function sumonleft() {
+    count = 0;
+    for (let i = 0; i < numparticles; i++) {
+        if (particles[i]) {
+            count += 1;
+        } else {
+            count -= 1;
+        }
+    }
+    return count;
 }
 
 function xcoord(index) {
     return (index - numparticles) * particlesize * spacingratio + W/2;
+}
+
+let currentycoord = 3*H/5 - sumonleft() * dy;
+
+function startingycoord() {
+    let nextycoord = 3*H/5 - sumonleft() * dy;
+    currentycoord += (nextycoord - currentycoord) / shiftframes;
+    return currentycoord;
 }
 
 function drawPath() {
@@ -45,7 +69,7 @@ function drawPath() {
 
     beginShape();
 
-    ycoord = H/4;
+    ycoord = startingycoord();
     vertex(xcoord(-0.5), ycoord);
 
     for (let i = 0; i < 2*numparticles; i++) {
@@ -63,7 +87,7 @@ function drawParticles() {
         } else {
             fill(color('white'));
         }
-        circle(xcoord(i), H - 100, particlesize);
+        circle(xcoord(i), 4*H/5, particlesize);
     }
 }
 
