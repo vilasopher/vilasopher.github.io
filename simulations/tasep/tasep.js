@@ -65,6 +65,7 @@ function startingycoord() {
 
 function drawPath() {
     stroke(0,0,0);
+    strokeWeight(4);
     noFill();
 
     beginShape();
@@ -81,6 +82,7 @@ function drawPath() {
 }
 
 function drawParticles() {
+    strokeWeight(2);
     for (let i = 0; i < 2*numparticles; i++) {
         if (particles[i]) {
             fill(color('black'));
