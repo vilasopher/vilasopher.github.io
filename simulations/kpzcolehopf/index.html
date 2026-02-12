@@ -11,18 +11,32 @@
 			
 			const width = window.innerWidth;
 			const height = window.innerHeight;
+
+			var wedge = true;
 			
 			function setup(){
 				var canvas = createCanvas(width, height);
 				frameRate(60);
 				
 				for (let i = 0; i < N; i++) {
-					SHE[i] = 1;
-					KPZ[i] = 0;
+
+					if (wedge && i != Math.floor(N/2)) {
+						SHE[i] = 0;
+						KPZ[i] = Math.log(SHE[i]);
+					} else {
+						SHE[i] = 1;
+						KPZ[i] = 0;
+					}
 				}
 				
 				stroke(0);
 				strokeWeight(1);
+
+				if (wedge) {
+					for (let i = 0; i < 60; i++) {
+						draw();
+					}
+				}
 			}
 			
 			// Standard Normal variate using Box-Muller transform.
@@ -51,11 +65,23 @@
 			function drawKPZ() {
 				fill(102, 204, 255);
 				beginShape();
-				vertex(-50,-50);
+
+				if (wedge) {
+					vertex(-50, height + 50);
+				} else {
+					vertex(-50,-50);
+				}
+
 				for (let i = 0; i < N; i++) {
 					vertex(i-50, height/6 - 5 * KPZ[i]);
 				}
-				vertex(width + 50, -50);
+
+				if (wedge) {
+					vertex(width + 50, height + 50);
+				} else {
+					vertex(width + 50, -50);
+				}
+
 				endShape(CLOSE);
 			}
 			
