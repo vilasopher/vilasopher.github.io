@@ -5,6 +5,7 @@ let H = window.innerHeight;
 let sigma = 10; // Scale factor
 let delta = 0.05; // Initial step size
 let epsilon = 1/768; // power of 2 or 4
+let speed = 2;
 
 let rho = Math.pow(2, epsilon);
 let rhosquared = Math.pow(4, epsilon);
@@ -17,6 +18,15 @@ let negB = [0];
 
 let parity = 0;
 var tickIndex = 0;
+
+const params = new URLSearchParams(window.location.search);
+var dark = false;
+if (params.has("dark")) {
+    dark = true;
+}
+if (params.has("slow")) {
+    speed = 1;
+}
 
 // Standard Normal variate using Box-Muller transform.
 function gaussianRandom(mean=0, stdev=1) {
@@ -64,6 +74,9 @@ function setup() {
 function drawPath(B, negate=false) {
     strokeWeight(3);
     stroke('black');
+    if(dark) {
+        stroke('white');
+    }
 
     signum = negate ? -1 : 1;
 
@@ -125,8 +138,11 @@ function drawTicks() {
 
 }
 
-function draw() {
+function drawhelper() {
     background(255);
+    if (dark) {
+        background(0);
+    }
 
     drawTicks();
 
@@ -137,4 +153,10 @@ function draw() {
     negB = resample(negB);
 
     tickIndex += 1;
+}
+
+function draw() {
+    for(let i = 0; i < speed; i++) {
+        drawhelper();
+    }
 }
