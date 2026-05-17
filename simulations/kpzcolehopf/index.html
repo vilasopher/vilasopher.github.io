@@ -12,7 +12,14 @@
 			const width = window.innerWidth;
 			const height = window.innerHeight;
 
-			var wedge = true;
+			const params = new URLSearchParams(window.location.search);
+			var wedge = false;
+			if (params.has("wedge")) {
+				wedge = true;
+			}
+			if (params.has("flat")) {
+				wedge = false;
+			}
 			
 			function setup(){
 				var canvas = createCanvas(width, height);
