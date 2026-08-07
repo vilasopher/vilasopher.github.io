@@ -68,7 +68,7 @@ function setup() {
         yaxis[j] = yaxis[j-1] * rho;
     }
 
-    frameRate(120);
+    frameRate(60);
 }
 
 function drawPath(B, negate=false) {

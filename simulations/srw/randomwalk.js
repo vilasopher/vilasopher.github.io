@@ -10,6 +10,11 @@ if (params.has("fast")) {
     fast = true;
 }
 
+var dark = false;
+if (params.has("dark")) {
+    dark = true;
+}
+
 let W = window.innerWidth;
 let H = window.innerHeight;
 let hscreenprop = 0.9;
@@ -33,6 +38,11 @@ function setup() {
     }
 
     colors[numpaths-1] = [0,0,0];
+    if (dark) {
+        colors[numpaths-1] = [255,255,255];
+    }
+
+    frameRate(30);
 }
 
 function drawPath(trace, color) {
@@ -56,6 +66,9 @@ function drawPath(trace, color) {
 
 function draw() {
     background(255);
+    if (dark) {
+        background(0);
+    }
 
     var t = traces[0].length;
     var numsteps = 1;
