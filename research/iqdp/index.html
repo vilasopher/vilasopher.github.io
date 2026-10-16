@@ -1,23 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Independent Sets in a Percolated Hypercube</title>
+	<title>Independent sets in a percolated hypercube</title>
 	<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
 </head>
 <body>
-	<h1>Independent Sets in a Percolated Hypercube</h1>
+	<h1>Independent sets in a percolated hypercube</h1>
 
 	<a href="../..">Back to main page</a><br>
-	<a href="..">Back to selected works</a><br>
+	<a href="..">Back to selected research works</a><br>
     <br>
 
-    Independent sets in a graph are sets of vertices which contain no neighbors.
-    They are important from a computer science perspective as counting the number of independent sets and finding the largest independent sets in general graphs are both NP-hard problems.
-    Additionally, they are used in the <i>hard-core model</i> of a gas in statistical mechanics.
-    In the '80s, Sapozhenko's graph container method was developed in order to approximately count the number of independent sets in the Boolean hypercube, and more recently interest has developed
-    in a <i>disordered media</i> version of this problem, where the edges of the hypercube are removed independently with probability \(p\) each.
-    In our paper <a href="https://arxiv.org/abs/2410.07080">Gaussian to log-normal transition for independent sets in a percolated hypercube</a>
-    (joint work with Mriganka Basu Roy Chowdhury and Shirshendu Ganguly), we develop a new probabilistic framework to study the number of independent sets in this random graph.
-    We prove that this random variable obeys a central limit theorem when \(p>\tfrac{2}{3}\), and has a log-normal distributional limit when \(p=\tfrac{2}{3}\).
-    Moreover, we use our techniques to extract information about typical geometric structure of independent sets in a percolated hypercube for all \(p\geq\tfrac{2}{3}\).
+    Independent sets are sets of vertices in a graph which contain no neighbors.
+    They are ubiquitous in computer science and statistical mechanics, as many questions can be rephrased in terms of independent sets in appropriate graphs;
+    moreover calculating the number of independent sets in an arbitrary graph is an NP-complete problem.
+    In joint work with <a href="https://mriganka.xyz">Mriganka Basu Roy Chowdhury</a> and <a href="https://www.stat.berkeley.edu/~sganguly/">Shirshendu Ganguly</a>,
+    we investigated the number of independent sets in a random subgraph of the Boolean hypercube obtained by performing <i>percolation</i> with parameter \(p\) (which is the
+    probability that an edge is retained, not deleted),
+    and characterized its distribution for a wide range of values of \(p\).
+    We denote the \(p\)-percolated \(d\)-dimensional hypercube by \(Q_{d,p}\), and the number of independent sets in this graph by \(i(Q_{d,p})\).
+
+    <figure style="text-align:center">
+        <img src="independentset.png" alt="an independent set in the Petersen graph" height="200">
+        &nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;
+        <img src="percolatedhypercube.png" alt="a percolated hypercube" height="200">
+
+        <figcaption>
+            <b>Left:</b> the blue vertices of the Petersen graph form an independent set.
+            <b>Right:</b> a sample of \(Q_{4,\frac{2}{3}}\).
+            Note that this graph is bipartite with an <i>even</i> side and an <i>odd</i> side; the parity here refers to the number of \(1\)s in the bit string corresponding to a vertex.
+        </figcaption>
+    </figure>
+
+    In <a href="https://arxiv.org/abs/2410.07080">our first paper in this area</a>, we develop a novel probabilistic technique to study the distribution of \(i(Q_{d,p})\).
+    For any fixed \(p > 0\), a typical independent set in \(Q_{d,p}\) will be contained mostly in the even or odd side, but will have many <i>defect vertices</i> in the opposite side.
+    We can study these defects using <i>polymer models</i>, which are a useful tool from statistical mechanics.
+    The use of polymer models for this problem was <a href="https://arxiv.org/abs/1907.00862">first done in the \(p=1\) case by Jenssen and Perkins</a>, and was <a href="https://arxiv.org/abs/2201.06127">adapted to an <i>annealed</i> version of the general case by Kronenberg and Spinka</a>.
+    We construct a new random polymer model that allows us to understand the <i>quenched</i> behavior of this model in a much more intricate way.
+    This leads to a central limit theorem for \(i(Q_{d,p})\) when \(p > \frac{2}{3}\), resolving a question asked by Kronenberg and Spinka, and we also obtain a lognormal limit at \(p = \frac{2}{3}\), which is
+    a critical value at which this model undergoes a concentration&ndash;anticoncentration phase transition.
+
+    <br>
+    <br>
+
+    In <a href="https://arxiv.org/abs/2511.07350">our second paper in this area</a>, we extend our techniques below \(p = \frac{2}{3}\), and cover all values of \(p > 0.465\); notably, this is strictly less than \(p = \frac{1}{2}\), a value which is of much interest
+    in \(Q_{d,p}\) as it is a point of phase transition for many other features of this random graph.
+    We find that in fact there is no real substantial phase transition for \(i(Q_{d,p})\) at \(p = \frac{1}{2}\), although there is a more subtle way in which the formulas involved in our theorem must change at this value.
+    In order to extend our analysis, we need to consider cases where the defects behave in more complicated ways, with an intricate clustering structure appearing at \(p = 2 - \sqrt{2} \approx 0.586\) and below.
+    In this regime, the defects form either <i>monomers</i> or <i>dimers</i> (size-two polymers), and the regime which we cover (down to approximately \(0.465\)) is exactly the regime of parameters
+    for which these two classes of defects can be shown to be roughly independent of one another.
+
+    <figure style="text-align:center">
+        <img src="phasediagram.png" alt="phase diagram for independent sets in \(Q_{d,p}\)" height="200">
+
+        <figcaption>
+            A phase diagram for independent sets in \(Q_{d,p}\).
+            The numbers on the bottom indicate \(p\)-values below which more intricate types of polymers appear: dimers appear below \(2 - 2^{1/2}\), trimers appear below \(2 - 2^{2/3}\), et cetera.
+            On the top, we see a sequence of phase transitions beginning, on the right at \(p = \frac{2}{3}\), with the concentration-anticoncentration transition; the others are higher-order analogs of this transition which only affect
+            the formulas describing the model, not its overall probabilistic behavior.
+        </figcaption>
+    </figure>
+
 </body>
